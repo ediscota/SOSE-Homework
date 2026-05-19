@@ -1,0 +1,831 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:dct="http://purl.org/dc/terms/"
+  xmlns:schema="http://schema.org/"
+  xmlns:emp="http://sose.univaq.it/employment#">
+
+  <!-- ============================================================
+       Lightweight ontology
+       ============================================================ -->
+  <rdfs:Class rdf:about="http://sose.univaq.it/employment#Candidate">
+    <rdfs:subClassOf rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <rdfs:label xml:lang="en">Candidate</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://sose.univaq.it/employment#JobOffer">
+    <rdfs:label xml:lang="en">Job offer</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://sose.univaq.it/employment#Company">
+    <rdfs:subClassOf rdf:resource="http://schema.org/Organization"/>
+    <rdfs:label xml:lang="en">Company</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://sose.univaq.it/employment#Skill">
+    <rdfs:label xml:lang="en">Skill</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://sose.univaq.it/employment#Sector">
+    <rdfs:label xml:lang="en">Sector</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://sose.univaq.it/employment#Location">
+    <rdfs:label xml:lang="en">Location</rdfs:label>
+  </rdfs:Class>
+
+  <rdf:Property rdf:about="http://sose.univaq.it/employment#hasSkill"/>
+  <rdf:Property rdf:about="http://sose.univaq.it/employment#hasSector"/>
+  <rdf:Property rdf:about="http://sose.univaq.it/employment#hasLocation"/>
+  <rdf:Property rdf:about="http://sose.univaq.it/employment#postedBy"/>
+  <rdf:Property rdf:about="http://sose.univaq.it/employment#yearsOfExperience"/>
+  <rdf:Property rdf:about="http://sose.univaq.it/employment#requiredExperience"/>
+  <rdf:Property rdf:about="http://sose.univaq.it/employment#salary"/>
+  <rdf:Property rdf:about="http://sose.univaq.it/employment#minSalary"/>
+  <rdf:Property rdf:about="http://sose.univaq.it/employment#postedDate"/>
+  <rdf:Property rdf:about="http://sose.univaq.it/employment#seniority"/>
+  <rdf:Property rdf:about="http://sose.univaq.it/employment#remote"/>
+  <rdf:Property rdf:about="http://sose.univaq.it/employment#disabilityFriendly"/>
+  <rdf:Property rdf:about="http://sose.univaq.it/employment#hasDisability"/>
+
+  <!-- Intentionally "problematic" properties — for EaaS to flag -->
+  <rdf:Property rdf:about="http://sose.univaq.it/employment#ageRangeMin">
+    <rdfs:comment xml:lang="en">Discriminatory proxy candidate</rdfs:comment>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://sose.univaq.it/employment#ageRangeMax">
+    <rdfs:comment xml:lang="en">Discriminatory proxy candidate</rdfs:comment>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://sose.univaq.it/employment#genderPreference">
+    <rdfs:comment xml:lang="en">Discriminatory proxy candidate</rdfs:comment>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://sose.univaq.it/employment#nationalityReq">
+    <rdfs:comment xml:lang="en">Discriminatory proxy candidate</rdfs:comment>
+  </rdf:Property>
+
+  <!-- ============================================================
+       Locations
+       ============================================================ -->
+  <emp:Location rdf:about="http://sose.univaq.it/employment#loc-rome">
+    <rdfs:label>Rome</rdfs:label>
+  </emp:Location>
+
+  <emp:Location rdf:about="http://sose.univaq.it/employment#loc-milan">
+    <rdfs:label>Milan</rdfs:label>
+  </emp:Location>
+
+  <emp:Location rdf:about="http://sose.univaq.it/employment#loc-laquila">
+    <rdfs:label>L&apos;Aquila</rdfs:label>
+  </emp:Location>
+
+  <emp:Location rdf:about="http://sose.univaq.it/employment#loc-naples">
+    <rdfs:label>Naples</rdfs:label>
+  </emp:Location>
+
+  <emp:Location rdf:about="http://sose.univaq.it/employment#loc-turin">
+    <rdfs:label>Turin</rdfs:label>
+  </emp:Location>
+
+  <emp:Location rdf:about="http://sose.univaq.it/employment#loc-bologna">
+    <rdfs:label>Bologna</rdfs:label>
+  </emp:Location>
+
+  <emp:Location rdf:about="http://sose.univaq.it/employment#loc-remote">
+    <rdfs:label>Remote</rdfs:label>
+  </emp:Location>
+
+  <!-- ============================================================
+       Sectors
+       ============================================================ -->
+  <emp:Sector rdf:about="http://sose.univaq.it/employment#sec-it">
+    <rdfs:label>Information Technology</rdfs:label>
+  </emp:Sector>
+
+  <emp:Sector rdf:about="http://sose.univaq.it/employment#sec-finance">
+    <rdfs:label>Finance</rdfs:label>
+  </emp:Sector>
+
+  <emp:Sector rdf:about="http://sose.univaq.it/employment#sec-health">
+    <rdfs:label>Healthcare</rdfs:label>
+  </emp:Sector>
+
+  <emp:Sector rdf:about="http://sose.univaq.it/employment#sec-edu">
+    <rdfs:label>Education</rdfs:label>
+  </emp:Sector>
+
+  <emp:Sector rdf:about="http://sose.univaq.it/employment#sec-logistics">
+    <rdfs:label>Logistics</rdfs:label>
+  </emp:Sector>
+
+  <!-- ============================================================
+       Skills
+       ============================================================ -->
+  <emp:Skill rdf:about="http://sose.univaq.it/employment#sk-java">
+    <rdfs:label>Java</rdfs:label>
+  </emp:Skill>
+  <emp:Skill rdf:about="http://sose.univaq.it/employment#sk-python">
+    <rdfs:label>Python</rdfs:label>
+  </emp:Skill>
+  <emp:Skill rdf:about="http://sose.univaq.it/employment#sk-sparql">
+    <rdfs:label>SPARQL</rdfs:label>
+  </emp:Skill>
+  <emp:Skill rdf:about="http://sose.univaq.it/employment#sk-react">
+    <rdfs:label>React</rdfs:label>
+  </emp:Skill>
+  <emp:Skill rdf:about="http://sose.univaq.it/employment#sk-sql">
+    <rdfs:label>SQL</rdfs:label>
+  </emp:Skill>
+  <emp:Skill rdf:about="http://sose.univaq.it/employment#sk-aws">
+    <rdfs:label>AWS</rdfs:label>
+  </emp:Skill>
+  <emp:Skill rdf:about="http://sose.univaq.it/employment#sk-docker">
+    <rdfs:label>Docker</rdfs:label>
+  </emp:Skill>
+  <emp:Skill rdf:about="http://sose.univaq.it/employment#sk-ml">
+    <rdfs:label>Machine Learning</rdfs:label>
+  </emp:Skill>
+  <emp:Skill rdf:about="http://sose.univaq.it/employment#sk-pm">
+    <rdfs:label>Project Management</rdfs:label>
+  </emp:Skill>
+  <emp:Skill rdf:about="http://sose.univaq.it/employment#sk-nursing">
+    <rdfs:label>Nursing</rdfs:label>
+  </emp:Skill>
+  <emp:Skill rdf:about="http://sose.univaq.it/employment#sk-teaching">
+    <rdfs:label>Teaching</rdfs:label>
+  </emp:Skill>
+  <emp:Skill rdf:about="http://sose.univaq.it/employment#sk-accounting">
+    <rdfs:label>Accounting</rdfs:label>
+  </emp:Skill>
+
+  <!-- ============================================================
+       Companies
+       ============================================================ -->
+  <emp:Company rdf:about="http://sose.univaq.it/employment#comp-acme">
+    <schema:name>Acme Tech</schema:name>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-milan"/>
+  </emp:Company>
+
+  <emp:Company rdf:about="http://sose.univaq.it/employment#comp-medcare">
+    <schema:name>MedCare Italia</schema:name>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-rome"/>
+  </emp:Company>
+
+  <emp:Company rdf:about="http://sose.univaq.it/employment#comp-edusmart">
+    <schema:name>EduSmart</schema:name>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-bologna"/>
+  </emp:Company>
+
+  <emp:Company rdf:about="http://sose.univaq.it/employment#comp-finhub">
+    <schema:name>FinHub</schema:name>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-milan"/>
+  </emp:Company>
+
+  <emp:Company rdf:about="http://sose.univaq.it/employment#comp-logix">
+    <schema:name>Logix Express</schema:name>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-naples"/>
+  </emp:Company>
+
+  <emp:Company rdf:about="http://sose.univaq.it/employment#comp-quantai">
+    <schema:name>QuantAI</schema:name>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-turin"/>
+  </emp:Company>
+
+  <emp:Company rdf:about="http://sose.univaq.it/employment#comp-startuplab">
+    <schema:name>StartupLab</schema:name>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-laquila"/>
+  </emp:Company>
+
+  <!-- ============================================================
+       Candidates (25)
+       ============================================================ -->
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-001">
+    <foaf:name>Alice Bianchi</foaf:name>
+    <foaf:gender>female</foaf:gender>
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">28</foaf:age>
+    <schema:nationality>IT</schema:nationality>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-milan"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-java"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-sql"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-docker"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">32000</emp:minSalary>
+    <dct:source>synthetic</dct:source>
+  </emp:Candidate>
+
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-002">
+    <foaf:name>Marco Rossi</foaf:name>
+    <foaf:gender>male</foaf:gender>
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">35</foaf:age>
+    <schema:nationality>IT</schema:nationality>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-rome"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">9</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-java"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-aws"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-pm"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">48000</emp:minSalary>
+    <dct:source>synthetic</dct:source>
+  </emp:Candidate>
+
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-003">
+    <foaf:name>Sara Conti</foaf:name>
+    <foaf:gender>female</foaf:gender>
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">24</foaf:age>
+    <schema:nationality>IT</schema:nationality>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-bologna"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-python"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-ml"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">26000</emp:minSalary>
+    <dct:source>synthetic</dct:source>
+  </emp:Candidate>
+
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-004">
+    <foaf:name>Luca Verdi</foaf:name>
+    <foaf:gender>male</foaf:gender>
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">52</foaf:age>
+    <schema:nationality>IT</schema:nationality>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-milan"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">25</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-java"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-pm"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-sql"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">60000</emp:minSalary>
+    <dct:source>synthetic</dct:source>
+  </emp:Candidate>
+
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-005">
+    <foaf:name>Fatima El-Amin</foaf:name>
+    <foaf:gender>female</foaf:gender>
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">31</foaf:age>
+    <schema:nationality>MA</schema:nationality>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-turin"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">6</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-python"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-ml"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-aws"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40000</emp:minSalary>
+    <dct:source>synthetic</dct:source>
+  </emp:Candidate>
+
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-006">
+    <foaf:name>Giorgio Neri</foaf:name>
+    <foaf:gender>male</foaf:gender>
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">45</foaf:age>
+    <schema:nationality>IT</schema:nationality>
+    <emp:hasDisability rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</emp:hasDisability>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-rome"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">18</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-java"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-sparql"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-sql"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50000</emp:minSalary>
+    <dct:source>synthetic</dct:source>
+  </emp:Candidate>
+
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-007">
+    <foaf:name>Chiara De Luca</foaf:name>
+    <foaf:gender>female</foaf:gender>
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">38</foaf:age>
+    <schema:nationality>IT</schema:nationality>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-naples"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">12</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-nursing"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">28000</emp:minSalary>
+    <dct:source>synthetic</dct:source>
+  </emp:Candidate>
+
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-008">
+    <foaf:name>Tomasz Kowalski</foaf:name>
+    <foaf:gender>male</foaf:gender>
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">29</foaf:age>
+    <schema:nationality>PL</schema:nationality>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-remote"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-react"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-java"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-docker"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">38000</emp:minSalary>
+    <dct:source>synthetic</dct:source>
+  </emp:Candidate>
+
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-009">
+    <foaf:name>Hiroshi Tanaka</foaf:name>
+    <foaf:gender>male</foaf:gender>
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">41</foaf:age>
+    <schema:nationality>JP</schema:nationality>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-milan"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-ml"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-python"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-aws"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">65000</emp:minSalary>
+    <dct:source>synthetic</dct:source>
+  </emp:Candidate>
+
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-010">
+    <foaf:name>Elena Greco</foaf:name>
+    <foaf:gender>female</foaf:gender>
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">22</foaf:age>
+    <schema:nationality>IT</schema:nationality>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-laquila"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-python"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-sql"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">22000</emp:minSalary>
+    <dct:source>synthetic</dct:source>
+  </emp:Candidate>
+
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-011">
+    <foaf:name>Paolo Marini</foaf:name>
+    <foaf:gender>male</foaf:gender>
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">60</foaf:age>
+    <schema:nationality>IT</schema:nationality>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-rome"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">30</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-pm"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-accounting"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">55000</emp:minSalary>
+    <dct:source>synthetic</dct:source>
+  </emp:Candidate>
+
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-012">
+    <foaf:name>Lucia Romano</foaf:name>
+    <foaf:gender>female</foaf:gender>
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">34</foaf:age>
+    <schema:nationality>IT</schema:nationality>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-milan"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">10</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-accounting"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">36000</emp:minSalary>
+    <dct:source>synthetic</dct:source>
+  </emp:Candidate>
+
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-013">
+    <foaf:name>Ibrahim Diallo</foaf:name>
+    <foaf:gender>male</foaf:gender>
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">27</foaf:age>
+    <schema:nationality>SN</schema:nationality>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-bologna"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-react"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-sql"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">30000</emp:minSalary>
+    <dct:source>synthetic</dct:source>
+  </emp:Candidate>
+
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-014">
+    <foaf:name>Anna Fischer</foaf:name>
+    <foaf:gender>female</foaf:gender>
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">36</foaf:age>
+    <schema:nationality>DE</schema:nationality>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-remote"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">11</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-aws"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-docker"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-java"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">58000</emp:minSalary>
+    <dct:source>synthetic</dct:source>
+  </emp:Candidate>
+
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-015">
+    <foaf:name>Davide Russo</foaf:name>
+    <foaf:gender>male</foaf:gender>
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">26</foaf:age>
+    <schema:nationality>IT</schema:nationality>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-turin"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-react"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-python"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">28000</emp:minSalary>
+    <dct:source>synthetic</dct:source>
+  </emp:Candidate>
+
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-016">
+    <foaf:name>Mei Chen</foaf:name>
+    <foaf:gender>female</foaf:gender>
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">30</foaf:age>
+    <schema:nationality>CN</schema:nationality>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-milan"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">7</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-ml"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-python"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50000</emp:minSalary>
+    <dct:source>synthetic</dct:source>
+  </emp:Candidate>
+
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-017">
+    <foaf:name>Sofia Bruno</foaf:name>
+    <foaf:gender>female</foaf:gender>
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">43</foaf:age>
+    <schema:nationality>IT</schema:nationality>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-naples"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">17</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-teaching"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">32000</emp:minSalary>
+    <dct:source>synthetic</dct:source>
+  </emp:Candidate>
+
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-018">
+    <foaf:name>Andrea Ferrari</foaf:name>
+    <foaf:gender>non-binary</foaf:gender>
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">32</foaf:age>
+    <schema:nationality>IT</schema:nationality>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-bologna"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">8</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-sparql"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-java"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-python"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">44000</emp:minSalary>
+    <dct:source>synthetic</dct:source>
+  </emp:Candidate>
+
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-019">
+    <foaf:name>Carlos Mendoza</foaf:name>
+    <foaf:gender>male</foaf:gender>
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">39</foaf:age>
+    <schema:nationality>ES</schema:nationality>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-rome"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">14</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-aws"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-docker"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-sql"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">52000</emp:minSalary>
+    <dct:source>synthetic</dct:source>
+  </emp:Candidate>
+
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-020">
+    <foaf:name>Giulia Moretti</foaf:name>
+    <foaf:gender>female</foaf:gender>
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">25</foaf:age>
+    <schema:nationality>IT</schema:nationality>
+    <emp:hasDisability rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</emp:hasDisability>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-laquila"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-react"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-python"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">26000</emp:minSalary>
+    <dct:source>synthetic</dct:source>
+  </emp:Candidate>
+
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-021">
+    <foaf:name>Mohammed Hassan</foaf:name>
+    <foaf:gender>male</foaf:gender>
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">33</foaf:age>
+    <schema:nationality>EG</schema:nationality>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-milan"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">9</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-java"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-pm"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">46000</emp:minSalary>
+    <dct:source>synthetic</dct:source>
+  </emp:Candidate>
+
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-022">
+    <foaf:name>Roberto Esposito</foaf:name>
+    <foaf:gender>male</foaf:gender>
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">48</foaf:age>
+    <schema:nationality>IT</schema:nationality>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-rome"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">22</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-nursing"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">34000</emp:minSalary>
+    <dct:source>synthetic</dct:source>
+  </emp:Candidate>
+
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-023">
+    <foaf:name>Valentina Ricci</foaf:name>
+    <foaf:gender>female</foaf:gender>
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">29</foaf:age>
+    <schema:nationality>IT</schema:nationality>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-milan"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">6</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-java"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-react"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-aws"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">42000</emp:minSalary>
+    <dct:source>synthetic</dct:source>
+  </emp:Candidate>
+
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-024">
+    <foaf:name>Petros Papadopoulos</foaf:name>
+    <foaf:gender>male</foaf:gender>
+    <foaf:age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">37</foaf:age>
+    <schema:nationality>GR</schema:nationality>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-remote"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">13</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-sql"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-python"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-ml"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">55000</emp:minSalary>
+    <dct:source>synthetic</dct:source>
+  </emp:Candidate>
+
+  <!-- Intentionally missing nationality/age — exercises the data-quality policy -->
+  <emp:Candidate rdf:about="http://sose.univaq.it/employment#cand-025">
+    <foaf:name>Anonymous Applicant</foaf:name>
+    <foaf:gender>female</foaf:gender>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-rome"/>
+    <emp:yearsOfExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</emp:yearsOfExperience>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-java"/>
+    <emp:minSalary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">30000</emp:minSalary>
+    <dct:source>scraped-public-board</dct:source>
+  </emp:Candidate>
+
+  <!-- ============================================================
+       Job offers (18)
+       Fields marked PROBLEMATIC are intentionally discriminatory —
+       they exist so the EaaS policies can detect and flag them.
+       ============================================================ -->
+  <emp:JobOffer rdf:about="http://sose.univaq.it/employment#job-001">
+    <dct:title>Backend Java Developer</dct:title>
+    <emp:postedBy rdf:resource="http://sose.univaq.it/employment#comp-acme"/>
+    <emp:hasSector rdf:resource="http://sose.univaq.it/employment#sec-it"/>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-milan"/>
+    <emp:remote rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</emp:remote>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-java"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-sql"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-docker"/>
+    <emp:requiredExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</emp:requiredExperience>
+    <emp:seniority>mid</emp:seniority>
+    <emp:salary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">38000</emp:salary>
+    <emp:postedDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-04-10</emp:postedDate>
+    <emp:disabilityFriendly rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</emp:disabilityFriendly>
+    <dct:source>company-portal</dct:source>
+  </emp:JobOffer>
+
+  <emp:JobOffer rdf:about="http://sose.univaq.it/employment#job-002">
+    <dct:title>Senior ML Engineer</dct:title>
+    <emp:postedBy rdf:resource="http://sose.univaq.it/employment#comp-quantai"/>
+    <emp:hasSector rdf:resource="http://sose.univaq.it/employment#sec-it"/>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-turin"/>
+    <emp:remote rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</emp:remote>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-python"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-ml"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-aws"/>
+    <emp:requiredExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">7</emp:requiredExperience>
+    <emp:seniority>senior</emp:seniority>
+    <emp:salary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">70000</emp:salary>
+    <emp:postedDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-04-15</emp:postedDate>
+    <emp:disabilityFriendly rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</emp:disabilityFriendly>
+    <dct:source>company-portal</dct:source>
+  </emp:JobOffer>
+
+  <!-- PROBLEMATIC: explicit age cap (ageism) -->
+  <emp:JobOffer rdf:about="http://sose.univaq.it/employment#job-003">
+    <dct:title>Junior Frontend Developer</dct:title>
+    <emp:postedBy rdf:resource="http://sose.univaq.it/employment#comp-startuplab"/>
+    <emp:hasSector rdf:resource="http://sose.univaq.it/employment#sec-it"/>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-laquila"/>
+    <emp:remote rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</emp:remote>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-react"/>
+    <emp:requiredExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</emp:requiredExperience>
+    <emp:seniority>junior</emp:seniority>
+    <emp:salary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">24000</emp:salary>
+    <emp:postedDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-04-20</emp:postedDate>
+    <emp:ageRangeMax rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">30</emp:ageRangeMax>
+    <dct:source>third-party-scraper</dct:source>
+  </emp:JobOffer>
+
+  <!-- PROBLEMATIC: gender preference -->
+  <emp:JobOffer rdf:about="http://sose.univaq.it/employment#job-004">
+    <dct:title>Logistics Operations Manager</dct:title>
+    <emp:postedBy rdf:resource="http://sose.univaq.it/employment#comp-logix"/>
+    <emp:hasSector rdf:resource="http://sose.univaq.it/employment#sec-logistics"/>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-naples"/>
+    <emp:remote rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</emp:remote>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-pm"/>
+    <emp:requiredExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</emp:requiredExperience>
+    <emp:seniority>senior</emp:seniority>
+    <emp:salary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">45000</emp:salary>
+    <emp:postedDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-04-12</emp:postedDate>
+    <emp:genderPreference>male</emp:genderPreference>
+    <dct:source>third-party-scraper</dct:source>
+  </emp:JobOffer>
+
+  <emp:JobOffer rdf:about="http://sose.univaq.it/employment#job-005">
+    <dct:title>Nurse - General Ward</dct:title>
+    <emp:postedBy rdf:resource="http://sose.univaq.it/employment#comp-medcare"/>
+    <emp:hasSector rdf:resource="http://sose.univaq.it/employment#sec-health"/>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-rome"/>
+    <emp:remote rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</emp:remote>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-nursing"/>
+    <emp:requiredExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</emp:requiredExperience>
+    <emp:seniority>mid</emp:seniority>
+    <emp:salary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">28000</emp:salary>
+    <emp:postedDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-04-18</emp:postedDate>
+    <emp:disabilityFriendly rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</emp:disabilityFriendly>
+    <dct:source>company-portal</dct:source>
+  </emp:JobOffer>
+
+  <emp:JobOffer rdf:about="http://sose.univaq.it/employment#job-006">
+    <dct:title>Cloud Architect</dct:title>
+    <emp:postedBy rdf:resource="http://sose.univaq.it/employment#comp-acme"/>
+    <emp:hasSector rdf:resource="http://sose.univaq.it/employment#sec-it"/>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-milan"/>
+    <emp:remote rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</emp:remote>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-aws"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-docker"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-java"/>
+    <emp:requiredExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">10</emp:requiredExperience>
+    <emp:seniority>senior</emp:seniority>
+    <emp:salary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">75000</emp:salary>
+    <emp:postedDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-04-22</emp:postedDate>
+    <emp:disabilityFriendly rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</emp:disabilityFriendly>
+    <dct:source>company-portal</dct:source>
+  </emp:JobOffer>
+
+  <emp:JobOffer rdf:about="http://sose.univaq.it/employment#job-007">
+    <dct:title>Financial Analyst</dct:title>
+    <emp:postedBy rdf:resource="http://sose.univaq.it/employment#comp-finhub"/>
+    <emp:hasSector rdf:resource="http://sose.univaq.it/employment#sec-finance"/>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-milan"/>
+    <emp:remote rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</emp:remote>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-accounting"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-sql"/>
+    <emp:requiredExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</emp:requiredExperience>
+    <emp:seniority>mid</emp:seniority>
+    <emp:salary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">42000</emp:salary>
+    <emp:postedDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-04-08</emp:postedDate>
+    <emp:disabilityFriendly rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</emp:disabilityFriendly>
+    <dct:source>company-portal</dct:source>
+  </emp:JobOffer>
+
+  <!-- PROBLEMATIC: nationality requirement -->
+  <emp:JobOffer rdf:about="http://sose.univaq.it/employment#job-008">
+    <dct:title>Government Contractor Developer</dct:title>
+    <emp:postedBy rdf:resource="http://sose.univaq.it/employment#comp-finhub"/>
+    <emp:hasSector rdf:resource="http://sose.univaq.it/employment#sec-finance"/>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-rome"/>
+    <emp:remote rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</emp:remote>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-java"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-sql"/>
+    <emp:requiredExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</emp:requiredExperience>
+    <emp:seniority>senior</emp:seniority>
+    <emp:salary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50000</emp:salary>
+    <emp:postedDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-04-25</emp:postedDate>
+    <emp:nationalityReq>IT</emp:nationalityReq>
+    <dct:source>third-party-scraper</dct:source>
+  </emp:JobOffer>
+
+  <emp:JobOffer rdf:about="http://sose.univaq.it/employment#job-009">
+    <dct:title>Teaching Assistant - Math</dct:title>
+    <emp:postedBy rdf:resource="http://sose.univaq.it/employment#comp-edusmart"/>
+    <emp:hasSector rdf:resource="http://sose.univaq.it/employment#sec-edu"/>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-bologna"/>
+    <emp:remote rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</emp:remote>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-teaching"/>
+    <emp:requiredExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</emp:requiredExperience>
+    <emp:seniority>mid</emp:seniority>
+    <emp:salary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">25000</emp:salary>
+    <emp:postedDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-04-30</emp:postedDate>
+    <emp:disabilityFriendly rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</emp:disabilityFriendly>
+    <dct:source>company-portal</dct:source>
+  </emp:JobOffer>
+
+  <emp:JobOffer rdf:about="http://sose.univaq.it/employment#job-010">
+    <dct:title>Data Engineer</dct:title>
+    <emp:postedBy rdf:resource="http://sose.univaq.it/employment#comp-quantai"/>
+    <emp:hasSector rdf:resource="http://sose.univaq.it/employment#sec-it"/>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-remote"/>
+    <emp:remote rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</emp:remote>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-python"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-sql"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-aws"/>
+    <emp:requiredExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</emp:requiredExperience>
+    <emp:seniority>mid</emp:seniority>
+    <emp:salary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">48000</emp:salary>
+    <emp:postedDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-05-02</emp:postedDate>
+    <emp:disabilityFriendly rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</emp:disabilityFriendly>
+    <dct:source>company-portal</dct:source>
+  </emp:JobOffer>
+
+  <emp:JobOffer rdf:about="http://sose.univaq.it/employment#job-011">
+    <dct:title>Semantic Web Engineer</dct:title>
+    <emp:postedBy rdf:resource="http://sose.univaq.it/employment#comp-startuplab"/>
+    <emp:hasSector rdf:resource="http://sose.univaq.it/employment#sec-it"/>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-laquila"/>
+    <emp:remote rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</emp:remote>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-sparql"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-java"/>
+    <emp:requiredExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</emp:requiredExperience>
+    <emp:seniority>mid</emp:seniority>
+    <emp:salary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">36000</emp:salary>
+    <emp:postedDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-05-05</emp:postedDate>
+    <emp:disabilityFriendly rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</emp:disabilityFriendly>
+    <dct:source>company-portal</dct:source>
+  </emp:JobOffer>
+
+  <!-- PROBLEMATIC: missing salary + unknown provenance -->
+  <emp:JobOffer rdf:about="http://sose.univaq.it/employment#job-012">
+    <dct:title>Sales Representative</dct:title>
+    <emp:postedBy rdf:resource="http://sose.univaq.it/employment#comp-logix"/>
+    <emp:hasSector rdf:resource="http://sose.univaq.it/employment#sec-logistics"/>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-naples"/>
+    <emp:remote rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</emp:remote>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-pm"/>
+    <emp:requiredExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</emp:requiredExperience>
+    <emp:seniority>junior</emp:seniority>
+    <emp:postedDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-05-01</emp:postedDate>
+    <dct:source>unknown</dct:source>
+  </emp:JobOffer>
+
+  <emp:JobOffer rdf:about="http://sose.univaq.it/employment#job-013">
+    <dct:title>Healthcare Project Manager</dct:title>
+    <emp:postedBy rdf:resource="http://sose.univaq.it/employment#comp-medcare"/>
+    <emp:hasSector rdf:resource="http://sose.univaq.it/employment#sec-health"/>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-rome"/>
+    <emp:remote rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</emp:remote>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-pm"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-nursing"/>
+    <emp:requiredExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">8</emp:requiredExperience>
+    <emp:seniority>senior</emp:seniority>
+    <emp:salary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">55000</emp:salary>
+    <emp:postedDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-04-28</emp:postedDate>
+    <emp:disabilityFriendly rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</emp:disabilityFriendly>
+    <dct:source>company-portal</dct:source>
+  </emp:JobOffer>
+
+  <emp:JobOffer rdf:about="http://sose.univaq.it/employment#job-014">
+    <dct:title>Full-stack Developer</dct:title>
+    <emp:postedBy rdf:resource="http://sose.univaq.it/employment#comp-acme"/>
+    <emp:hasSector rdf:resource="http://sose.univaq.it/employment#sec-it"/>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-milan"/>
+    <emp:remote rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</emp:remote>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-java"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-react"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-sql"/>
+    <emp:requiredExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</emp:requiredExperience>
+    <emp:seniority>mid</emp:seniority>
+    <emp:salary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40000</emp:salary>
+    <emp:postedDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-05-04</emp:postedDate>
+    <emp:disabilityFriendly rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</emp:disabilityFriendly>
+    <dct:source>company-portal</dct:source>
+  </emp:JobOffer>
+
+  <emp:JobOffer rdf:about="http://sose.univaq.it/employment#job-015">
+    <dct:title>Accountant</dct:title>
+    <emp:postedBy rdf:resource="http://sose.univaq.it/employment#comp-finhub"/>
+    <emp:hasSector rdf:resource="http://sose.univaq.it/employment#sec-finance"/>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-milan"/>
+    <emp:remote rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</emp:remote>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-accounting"/>
+    <emp:requiredExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</emp:requiredExperience>
+    <emp:seniority>mid</emp:seniority>
+    <emp:salary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">38000</emp:salary>
+    <emp:postedDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-04-14</emp:postedDate>
+    <emp:disabilityFriendly rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</emp:disabilityFriendly>
+    <dct:source>company-portal</dct:source>
+  </emp:JobOffer>
+
+  <!-- PROBLEMATIC: overly narrow age range -->
+  <emp:JobOffer rdf:about="http://sose.univaq.it/employment#job-016">
+    <dct:title>Trainee Software Engineer</dct:title>
+    <emp:postedBy rdf:resource="http://sose.univaq.it/employment#comp-startuplab"/>
+    <emp:hasSector rdf:resource="http://sose.univaq.it/employment#sec-it"/>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-laquila"/>
+    <emp:remote rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</emp:remote>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-python"/>
+    <emp:requiredExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</emp:requiredExperience>
+    <emp:seniority>junior</emp:seniority>
+    <emp:salary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">20000</emp:salary>
+    <emp:postedDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-05-06</emp:postedDate>
+    <emp:ageRangeMin rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">20</emp:ageRangeMin>
+    <emp:ageRangeMax rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">26</emp:ageRangeMax>
+    <dct:source>third-party-scraper</dct:source>
+  </emp:JobOffer>
+
+  <emp:JobOffer rdf:about="http://sose.univaq.it/employment#job-017">
+    <dct:title>Online Tutor - Coding</dct:title>
+    <emp:postedBy rdf:resource="http://sose.univaq.it/employment#comp-edusmart"/>
+    <emp:hasSector rdf:resource="http://sose.univaq.it/employment#sec-edu"/>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-remote"/>
+    <emp:remote rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</emp:remote>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-python"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-teaching"/>
+    <emp:requiredExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</emp:requiredExperience>
+    <emp:seniority>mid</emp:seniority>
+    <emp:salary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">26000</emp:salary>
+    <emp:postedDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-05-07</emp:postedDate>
+    <emp:disabilityFriendly rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</emp:disabilityFriendly>
+    <dct:source>company-portal</dct:source>
+  </emp:JobOffer>
+
+  <emp:JobOffer rdf:about="http://sose.univaq.it/employment#job-018">
+    <dct:title>DevOps Engineer</dct:title>
+    <emp:postedBy rdf:resource="http://sose.univaq.it/employment#comp-quantai"/>
+    <emp:hasSector rdf:resource="http://sose.univaq.it/employment#sec-it"/>
+    <emp:hasLocation rdf:resource="http://sose.univaq.it/employment#loc-turin"/>
+    <emp:remote rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</emp:remote>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-docker"/>
+    <emp:hasSkill rdf:resource="http://sose.univaq.it/employment#sk-aws"/>
+    <emp:requiredExperience rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</emp:requiredExperience>
+    <emp:seniority>senior</emp:seniority>
+    <emp:salary rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">52000</emp:salary>
+    <emp:postedDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-05-08</emp:postedDate>
+    <emp:disabilityFriendly rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</emp:disabilityFriendly>
+    <dct:source>company-portal</dct:source>
+  </emp:JobOffer>
+
+</rdf:RDF>

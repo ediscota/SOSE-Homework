@@ -19,7 +19,10 @@
       "Bash(curl -s -X POST http://localhost:8082/api/ethics/evaluate -H 'Content-Type: application/json' -d @docs/example-requests/req-reject.json)",
       "Bash(curl -s http://localhost:8082/api/audit)",
       "Bash(python3 -c \"import json,sys; r=json.load\\(sys.stdin\\); print\\(f'{len\\(r\\)} audit records'\\); [print\\(f' - {x[\\\\\"auditId\\\\\"]} → {x[\\\\\"decision\\\\\"]} \\({x[\\\\\"riskLevel\\\\\"]}\\) for {x[\\\\\"request\\\\\"][\\\\\"candidateId\\\\\"]}/{x[\\\\\"request\\\\\"][\\\\\"jobId\\\\\"]}'\\) for x in r]\")",
-      "Bash(python3 -c \"import sys,json; r=json.loads\\(sys.stdin.read\\(\\)\\); print\\('auditId:', r['auditId']\\); print\\('decision:', r['decision']\\); print\\('riskLevel:', r['riskLevel']\\); print\\('candidateId:', r['request']['candidateId']\\); print\\('jobId:', r['request']['jobId']\\); print\\('findings:', len\\(r['findings']\\)\\)\")"
+      "Bash(python3 -c \"import sys,json; r=json.loads\\(sys.stdin.read\\(\\)\\); print\\('auditId:', r['auditId']\\); print\\('decision:', r['decision']\\); print\\('riskLevel:', r['riskLevel']\\); print\\('candidateId:', r['request']['candidateId']\\); print\\('jobId:', r['request']['jobId']\\); print\\('findings:', len\\(r['findings']\\)\\)\")",
+      "Bash(mvn -pl daas-service -DskipTests clean compile)",
+      "Bash(python3 -c \"import json,sys; r=json.load\\(sys.stdin\\); print\\(f'{len\\(r\\)} risky offers'\\); [print\\(f' {o[\\\\\"id\\\\\"]}: {o[\\\\\"title\\\\\"]}'\\) for o in r]\")",
+      "Bash(python3 -c \"import json,sys; r=json.load\\(sys.stdin\\); print\\(f'{len\\(r\\)} matches'\\)\")"
     ]
   }
 }

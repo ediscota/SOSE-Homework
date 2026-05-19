@@ -29,7 +29,7 @@ public class JenaConfig {
         Resource resource = resourceLoader.getResource(datasetPath);
         Model model = ModelFactory.createDefaultModel();
         try (InputStream in = resource.getInputStream()) {
-            RDFParser.source(in).lang(Lang.TURTLE).parse(model);
+            RDFParser.source(in).lang(Lang.RDFXML).parse(model);
         }
         log.info("Loaded employment dataset from {}: {} triples", datasetPath, model.size());
         return DatasetFactory.create(model);
