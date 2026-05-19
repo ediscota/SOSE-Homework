@@ -1,0 +1,8 @@
+{
+  "action": "recommend-job",
+  "candidateId": "cand-001",
+  "jobId": "job-001",
+  "requester": "ui-user:edoardo",
+  "purpose": "show top recommendation on the candidate dashboard",
+  "declaredRisk": "LOW"
+}

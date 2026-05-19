@@ -1,0 +1,54 @@
+{
+  "auditId": "audit-3f1c0e0d-8c4e-4c41-a4f8-2a2d3a9f1b22",
+  "timestamp": "2026-05-19T12:34:56Z",
+  "request": {
+    "action": "recommend-job",
+    "candidateId": "cand-001",
+    "jobId": "job-003",
+    "requester": "ui-user:edoardo",
+    "purpose": "show top recommendation on the candidate dashboard",
+    "declaredRisk": "LOW"
+  },
+  "evaluatedCandidate": {
+    "id": "cand-001",
+    "name": "Alice Bianchi",
+    "age": 28,
+    "gender": "female",
+    "nationality": "IT",
+    "source": "synthetic"
+  },
+  "evaluatedJob": {
+    "id": "job-003",
+    "title": "Junior Frontend Developer",
+    "ageRangeMax": 30,
+    "source": "third-party-scraper"
+  },
+  "riskLevel": "CRITICAL",
+  "decision": "REJECT",
+  "findings": [
+    {
+      "policyId": "P-DISCR-001",
+      "policyName": "Prohibition of discriminatory proxies in selection",
+      "severity": "CRITICAL",
+      "message": "The offer uses one or more discriminatory proxy fields in candidate selection.",
+      "evidence": ["Offer carries 'ageRangeMax' = 30"],
+      "requiredActions": [
+        "Hide the offer from automated recommendations.",
+        "Notify the offer's owner to remove the discriminatory field.",
+        "Escalate to compliance officer."
+      ]
+    },
+    {
+      "policyId": "P-PROV-002",
+      "policyName": "Data provenance and quality",
+      "severity": "HIGH",
+      "message": "The offer data does not meet the provenance/quality threshold.",
+      "evidence": ["Offer source is 'third-party-scraper', not in trusted sources [company-portal, synthetic]"],
+      "requiredActions": [
+        "Flag the recommendation as unverified.",
+        "Request manual verification of the offer before display."
+      ]
+    }
+  ],
+  "appliedPolicies": ["P-ACC-003", "P-DISCR-001", "P-PROV-002", "P-TRANS-004"]
+}

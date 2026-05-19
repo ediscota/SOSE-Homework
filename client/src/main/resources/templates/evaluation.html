@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('EaaS evaluation')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main>
+    <a th:href="@{/match(candidateId=${candidate.id})}" class="btn btn-secondary">← Back to recommendations</a>
+    <h2>Ethical evaluation</h2>
+
+    <div class="card">
+        <div style="display:flex; align-items:center; gap:1rem;">
+            <span th:class="'decision-' + ${evaluation.decision}" th:text="${evaluation.decision}">PROCEED</span>
+            <span>Risk: <span th:class="'risk-' + ${evaluation.riskLevel}" th:text="${evaluation.riskLevel}">LOW</span></span>
+            <span class="muted">audit <code th:text="${evaluation.auditId}">audit-...</code></span>
+            <a th:href="@{/audit/{id}(id=${evaluation.auditId})}" class="btn btn-secondary" style="margin-left:auto">View audit record</a>
+        </div>
+        <p style="margin-top:1rem" th:text="${evaluation.rationale}">Rationale…</p>
+    </div>
+
+    <div class="grid-2">
+        <div class="card">
+            <h3 style="margin-top:0">Candidate</h3>
+            <p><strong th:text="${candidate.name}">Name</strong> · <span th:text="${candidate.id}">cand</span></p>
+            <p class="muted">
+                <span th:text="${candidate.gender}">gender</span> · age <span th:text="${candidate.age}">?</span> ·
+                <span th:text="${candidate.nationality}">nat</span> ·
+                <span th:text="${candidate.location}">loc</span> ·
+                <span th:text="${candidate.yearsOfExperience}">?</span> yrs exp
+            </p>
+            <p class="muted">source: <code th:text="${candidate.source}">source</code></p>
+        </div>
+        <div class="card">
+            <h3 style="margin-top:0">Job offer</h3>
+            <p><strong th:text="${job.title}">Title</strong> · <span th:text="${job.id}">job</span></p>
+            <p class="muted">
+                <span th:text="${job.company}">company</span> · <span th:text="${job.location}">loc</span> ·
+                <span th:text="${job.seniority}">sen</span> · salary
+                <span th:text="${job.salary}">?</span>
+            </p>
+            <p class="muted">source: <code th:text="${job.source}">source</code></p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 style="margin-top:0">Triggered policies</h3>
+        <p th:if="${#lists.isEmpty(evaluation.findings)}" class="muted">No policy was triggered.</p>
+        <div th:each="f : ${evaluation.findings}" th:class="'finding ' + ${f.severity}">
+            <strong th:text="${f.policyName}">Policy</strong>
+            (<code th:text="${f.policyId}">P-X</code>, severity <span th:text="${f.severity}">HIGH</span>)
+            <p style="margin:0.3rem 0" th:text="${f.message}">Message</p>
+            <ul>
+                <li th:each="e : ${f.evidence}" th:text="${e}">evidence</li>
+            </ul>
+            <p class="muted" style="margin:0.5rem 0 0">Required actions:</p>
+            <ul>
+                <li th:each="a : ${f.requiredActions}" th:text="${a}">action</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 style="margin-top:0">Applied policies (all evaluated)</h3>
+        <p>
+            <span th:each="p : ${evaluation.appliedPolicies}" class="badge badge-skill" th:text="${p}">P-X</span>
+        </p>
+        <p class="muted">Provenance: candidate from <code th:text="${evaluation.provenance.daasEndpoint}">daas</code> at <span th:text="${evaluation.provenance.fetchedAt}">ts</span>.</p>
+    </div>
+
+    <details class="card">
+        <summary>Raw request sent to EaaS (note: <code>declaredRisk</code> is intentionally ignored)</summary>
+        <pre th:text="${request}">…</pre>
+    </details>
+</main>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Candidates')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main>
+    <h2>Candidates</h2>
+    <p class="muted">Select a candidate to see job recommendations from the DaaS, then ask the EaaS to evaluate one of them.</p>
+    <div class="card">
+        <table>
+            <thead>
+            <tr><th>ID</th><th>Name</th><th>Age</th><th>Gender</th><th>Location</th><th>Years exp.</th><th>Disability</th><th>Skills</th><th></th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="c : ${candidates}">
+                <td><code th:text="${c.id}">cand-001</code></td>
+                <td th:text="${c.name}">Name</td>
+                <td th:text="${c.age}">28</td>
+                <td th:text="${c.gender}">female</td>
+                <td th:text="${c.location}">Milan</td>
+                <td th:text="${c.yearsOfExperience}">4</td>
+                <td><span th:if="${c.hasDisability}" class="badge" style="background:#ffe7b3">yes</span></td>
+                <td>
+                    <span th:each="s : ${c.skills}" class="badge badge-skill" th:text="${s}">skill</span>
+                </td>
+                <td><a class="btn" th:href="@{/match(candidateId=${c.id})}">Recommend</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

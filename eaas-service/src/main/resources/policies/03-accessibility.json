@@ -1,0 +1,12 @@
+{
+  "id": "P-ACC-003",
+  "name": "Protection of candidates with disabilities",
+  "description": "When the candidate has a declared disability, the system must surface offers that are explicitly disability-friendly and warn when an offer makes no such commitment. Aligned with UN CRPD Art.27 and Italian L.68/1999 on targeted employment.",
+  "rule": "disability_friendly_required",
+  "severity": "MEDIUM",
+  "parameters": { },
+  "requiredActions": [
+    "Add a visible 'accessibility unknown' label to the recommendation.",
+    "Prefer disability-friendly offers in ranking."
+  ]
+}

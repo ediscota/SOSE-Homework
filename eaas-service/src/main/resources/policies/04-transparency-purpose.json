@@ -1,0 +1,11 @@
+{
+  "id": "P-TRANS-004",
+  "name": "Transparency of automated recommendation",
+  "description": "Every automated recommendation must declare its purpose and requester. Anonymous calls or recommendations missing a stated purpose cannot be considered transparent (GDPR Art.13/22).",
+  "rule": "purpose_and_requester_declared",
+  "severity": "LOW",
+  "parameters": { },
+  "requiredActions": [
+    "Reject the request and ask the caller to declare requester and purpose."
+  ]
+}

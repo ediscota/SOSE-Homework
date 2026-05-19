@@ -1,0 +1,15 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: daas-service
+
+daas:
+  dataset:
+    path: classpath:dataset/employment.ttl
+
+logging:
+  level:
+    it.univaq.sose: INFO
+    org.apache.jena: WARN

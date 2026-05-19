@@ -1,0 +1,15 @@
+{
+  "id": "P-PROV-002",
+  "name": "Data provenance and quality",
+  "description": "Decisions affecting people must be based on data of known and reliable origin. Records from unverified third-party scrapers or with missing critical fields (e.g. salary, source) must trigger human review.",
+  "rule": "weak_provenance_or_quality",
+  "severity": "HIGH",
+  "parameters": {
+    "trustedSources": ["company-portal", "synthetic"],
+    "requiredJobFields": ["salary", "source"]
+  },
+  "requiredActions": [
+    "Flag the recommendation as unverified.",
+    "Request manual verification of the offer before display."
+  ]
+}

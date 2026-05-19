@@ -1,0 +1,438 @@
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf:   <http://xmlns.com/foaf/0.1/> .
+@prefix dct:    <http://purl.org/dc/terms/> .
+@prefix schema: <http://schema.org/> .
+@prefix emp:    <http://sose.univaq.it/employment#> .
+
+#################################################################
+# Lightweight ontology
+#################################################################
+emp:Candidate     a rdfs:Class ; rdfs:subClassOf foaf:Person ;
+                  rdfs:label "Candidate"@en .
+emp:JobOffer      a rdfs:Class ; rdfs:label "Job offer"@en .
+emp:Company       a rdfs:Class ; rdfs:subClassOf schema:Organization ;
+                  rdfs:label "Company"@en .
+emp:Skill         a rdfs:Class ; rdfs:label "Skill"@en .
+emp:Sector        a rdfs:Class ; rdfs:label "Sector"@en .
+emp:Location      a rdfs:Class ; rdfs:label "Location"@en .
+
+emp:hasSkill            a rdf:Property .
+emp:hasSector           a rdf:Property .
+emp:hasLocation         a rdf:Property .
+emp:postedBy            a rdf:Property .
+emp:yearsOfExperience   a rdf:Property .
+emp:requiredExperience  a rdf:Property .
+emp:salary              a rdf:Property .
+emp:minSalary           a rdf:Property .
+emp:postedDate          a rdf:Property .
+emp:seniority           a rdf:Property .
+emp:remote              a rdf:Property .
+emp:disabilityFriendly  a rdf:Property .
+# --- intentionally "problematic" properties (for EaaS to flag) ---
+emp:ageRangeMin         a rdf:Property ; rdfs:comment "Discriminatory proxy candidate"@en .
+emp:ageRangeMax         a rdf:Property ; rdfs:comment "Discriminatory proxy candidate"@en .
+emp:genderPreference    a rdf:Property ; rdfs:comment "Discriminatory proxy candidate"@en .
+emp:nationalityReq      a rdf:Property ; rdfs:comment "Discriminatory proxy candidate"@en .
+
+#################################################################
+# Locations
+#################################################################
+emp:loc-rome      a emp:Location ; rdfs:label "Rome" .
+emp:loc-milan     a emp:Location ; rdfs:label "Milan" .
+emp:loc-laquila   a emp:Location ; rdfs:label "L'Aquila" .
+emp:loc-naples    a emp:Location ; rdfs:label "Naples" .
+emp:loc-turin     a emp:Location ; rdfs:label "Turin" .
+emp:loc-bologna   a emp:Location ; rdfs:label "Bologna" .
+emp:loc-remote    a emp:Location ; rdfs:label "Remote" .
+
+#################################################################
+# Sectors
+#################################################################
+emp:sec-it        a emp:Sector ; rdfs:label "Information Technology" .
+emp:sec-finance   a emp:Sector ; rdfs:label "Finance" .
+emp:sec-health    a emp:Sector ; rdfs:label "Healthcare" .
+emp:sec-edu       a emp:Sector ; rdfs:label "Education" .
+emp:sec-logistics a emp:Sector ; rdfs:label "Logistics" .
+
+#################################################################
+# Skills
+#################################################################
+emp:sk-java       a emp:Skill ; rdfs:label "Java" .
+emp:sk-python     a emp:Skill ; rdfs:label "Python" .
+emp:sk-sparql     a emp:Skill ; rdfs:label "SPARQL" .
+emp:sk-react      a emp:Skill ; rdfs:label "React" .
+emp:sk-sql        a emp:Skill ; rdfs:label "SQL" .
+emp:sk-aws        a emp:Skill ; rdfs:label "AWS" .
+emp:sk-docker     a emp:Skill ; rdfs:label "Docker" .
+emp:sk-ml         a emp:Skill ; rdfs:label "Machine Learning" .
+emp:sk-pm         a emp:Skill ; rdfs:label "Project Management" .
+emp:sk-nursing    a emp:Skill ; rdfs:label "Nursing" .
+emp:sk-teaching   a emp:Skill ; rdfs:label "Teaching" .
+emp:sk-accounting a emp:Skill ; rdfs:label "Accounting" .
+
+#################################################################
+# Companies
+#################################################################
+emp:comp-acme       a emp:Company ; schema:name "Acme Tech"      ; emp:hasLocation emp:loc-milan .
+emp:comp-medcare    a emp:Company ; schema:name "MedCare Italia" ; emp:hasLocation emp:loc-rome .
+emp:comp-edusmart   a emp:Company ; schema:name "EduSmart"       ; emp:hasLocation emp:loc-bologna .
+emp:comp-finhub     a emp:Company ; schema:name "FinHub"         ; emp:hasLocation emp:loc-milan .
+emp:comp-logix      a emp:Company ; schema:name "Logix Express"  ; emp:hasLocation emp:loc-naples .
+emp:comp-quantai    a emp:Company ; schema:name "QuantAI"        ; emp:hasLocation emp:loc-turin .
+emp:comp-startuplab a emp:Company ; schema:name "StartupLab"     ; emp:hasLocation emp:loc-laquila .
+
+#################################################################
+# Candidates (25)
+# Notes: include diverse ages, genders, nationalities, disabilities
+# so that EaaS policies can be exercised on real cases.
+#################################################################
+emp:cand-001 a emp:Candidate ;
+  foaf:name "Alice Bianchi" ; foaf:gender "female" ; foaf:age 28 ;
+  schema:nationality "IT" ;
+  emp:hasLocation emp:loc-milan ; emp:yearsOfExperience 4 ;
+  emp:hasSkill emp:sk-java, emp:sk-sql, emp:sk-docker ;
+  emp:minSalary 32000 ; dct:source "synthetic" .
+
+emp:cand-002 a emp:Candidate ;
+  foaf:name "Marco Rossi" ; foaf:gender "male" ; foaf:age 35 ;
+  schema:nationality "IT" ;
+  emp:hasLocation emp:loc-rome ; emp:yearsOfExperience 9 ;
+  emp:hasSkill emp:sk-java, emp:sk-aws, emp:sk-pm ;
+  emp:minSalary 48000 ; dct:source "synthetic" .
+
+emp:cand-003 a emp:Candidate ;
+  foaf:name "Sara Conti" ; foaf:gender "female" ; foaf:age 24 ;
+  schema:nationality "IT" ;
+  emp:hasLocation emp:loc-bologna ; emp:yearsOfExperience 1 ;
+  emp:hasSkill emp:sk-python, emp:sk-ml ;
+  emp:minSalary 26000 ; dct:source "synthetic" .
+
+emp:cand-004 a emp:Candidate ;
+  foaf:name "Luca Verdi" ; foaf:gender "male" ; foaf:age 52 ;
+  schema:nationality "IT" ;
+  emp:hasLocation emp:loc-milan ; emp:yearsOfExperience 25 ;
+  emp:hasSkill emp:sk-java, emp:sk-pm, emp:sk-sql ;
+  emp:minSalary 60000 ; dct:source "synthetic" .
+
+emp:cand-005 a emp:Candidate ;
+  foaf:name "Fatima El-Amin" ; foaf:gender "female" ; foaf:age 31 ;
+  schema:nationality "MA" ;
+  emp:hasLocation emp:loc-turin ; emp:yearsOfExperience 6 ;
+  emp:hasSkill emp:sk-python, emp:sk-ml, emp:sk-aws ;
+  emp:minSalary 40000 ; dct:source "synthetic" .
+
+emp:cand-006 a emp:Candidate ;
+  foaf:name "Giorgio Neri" ; foaf:gender "male" ; foaf:age 45 ;
+  schema:nationality "IT" ; emp:hasDisability true ;
+  emp:hasLocation emp:loc-rome ; emp:yearsOfExperience 18 ;
+  emp:hasSkill emp:sk-java, emp:sk-sparql, emp:sk-sql ;
+  emp:minSalary 50000 ; dct:source "synthetic" .
+
+emp:cand-007 a emp:Candidate ;
+  foaf:name "Chiara De Luca" ; foaf:gender "female" ; foaf:age 38 ;
+  schema:nationality "IT" ;
+  emp:hasLocation emp:loc-naples ; emp:yearsOfExperience 12 ;
+  emp:hasSkill emp:sk-nursing ;
+  emp:minSalary 28000 ; dct:source "synthetic" .
+
+emp:cand-008 a emp:Candidate ;
+  foaf:name "Tomasz Kowalski" ; foaf:gender "male" ; foaf:age 29 ;
+  schema:nationality "PL" ;
+  emp:hasLocation emp:loc-remote ; emp:yearsOfExperience 5 ;
+  emp:hasSkill emp:sk-react, emp:sk-java, emp:sk-docker ;
+  emp:minSalary 38000 ; dct:source "synthetic" .
+
+emp:cand-009 a emp:Candidate ;
+  foaf:name "Hiroshi Tanaka" ; foaf:gender "male" ; foaf:age 41 ;
+  schema:nationality "JP" ;
+  emp:hasLocation emp:loc-milan ; emp:yearsOfExperience 15 ;
+  emp:hasSkill emp:sk-ml, emp:sk-python, emp:sk-aws ;
+  emp:minSalary 65000 ; dct:source "synthetic" .
+
+emp:cand-010 a emp:Candidate ;
+  foaf:name "Elena Greco" ; foaf:gender "female" ; foaf:age 22 ;
+  schema:nationality "IT" ;
+  emp:hasLocation emp:loc-laquila ; emp:yearsOfExperience 0 ;
+  emp:hasSkill emp:sk-python, emp:sk-sql ;
+  emp:minSalary 22000 ; dct:source "synthetic" .
+
+emp:cand-011 a emp:Candidate ;
+  foaf:name "Paolo Marini" ; foaf:gender "male" ; foaf:age 60 ;
+  schema:nationality "IT" ;
+  emp:hasLocation emp:loc-rome ; emp:yearsOfExperience 30 ;
+  emp:hasSkill emp:sk-pm, emp:sk-accounting ;
+  emp:minSalary 55000 ; dct:source "synthetic" .
+
+emp:cand-012 a emp:Candidate ;
+  foaf:name "Lucia Romano" ; foaf:gender "female" ; foaf:age 34 ;
+  schema:nationality "IT" ;
+  emp:hasLocation emp:loc-milan ; emp:yearsOfExperience 10 ;
+  emp:hasSkill emp:sk-accounting ;
+  emp:minSalary 36000 ; dct:source "synthetic" .
+
+emp:cand-013 a emp:Candidate ;
+  foaf:name "Ibrahim Diallo" ; foaf:gender "male" ; foaf:age 27 ;
+  schema:nationality "SN" ;
+  emp:hasLocation emp:loc-bologna ; emp:yearsOfExperience 3 ;
+  emp:hasSkill emp:sk-react, emp:sk-sql ;
+  emp:minSalary 30000 ; dct:source "synthetic" .
+
+emp:cand-014 a emp:Candidate ;
+  foaf:name "Anna Fischer" ; foaf:gender "female" ; foaf:age 36 ;
+  schema:nationality "DE" ;
+  emp:hasLocation emp:loc-remote ; emp:yearsOfExperience 11 ;
+  emp:hasSkill emp:sk-aws, emp:sk-docker, emp:sk-java ;
+  emp:minSalary 58000 ; dct:source "synthetic" .
+
+emp:cand-015 a emp:Candidate ;
+  foaf:name "Davide Russo" ; foaf:gender "male" ; foaf:age 26 ;
+  schema:nationality "IT" ;
+  emp:hasLocation emp:loc-turin ; emp:yearsOfExperience 2 ;
+  emp:hasSkill emp:sk-react, emp:sk-python ;
+  emp:minSalary 28000 ; dct:source "synthetic" .
+
+emp:cand-016 a emp:Candidate ;
+  foaf:name "Mei Chen" ; foaf:gender "female" ; foaf:age 30 ;
+  schema:nationality "CN" ;
+  emp:hasLocation emp:loc-milan ; emp:yearsOfExperience 7 ;
+  emp:hasSkill emp:sk-ml, emp:sk-python ;
+  emp:minSalary 50000 ; dct:source "synthetic" .
+
+emp:cand-017 a emp:Candidate ;
+  foaf:name "Sofia Bruno" ; foaf:gender "female" ; foaf:age 43 ;
+  schema:nationality "IT" ;
+  emp:hasLocation emp:loc-naples ; emp:yearsOfExperience 17 ;
+  emp:hasSkill emp:sk-teaching ;
+  emp:minSalary 32000 ; dct:source "synthetic" .
+
+emp:cand-018 a emp:Candidate ;
+  foaf:name "Andrea Ferrari" ; foaf:gender "non-binary" ; foaf:age 32 ;
+  schema:nationality "IT" ;
+  emp:hasLocation emp:loc-bologna ; emp:yearsOfExperience 8 ;
+  emp:hasSkill emp:sk-sparql, emp:sk-java, emp:sk-python ;
+  emp:minSalary 44000 ; dct:source "synthetic" .
+
+emp:cand-019 a emp:Candidate ;
+  foaf:name "Carlos Mendoza" ; foaf:gender "male" ; foaf:age 39 ;
+  schema:nationality "ES" ;
+  emp:hasLocation emp:loc-rome ; emp:yearsOfExperience 14 ;
+  emp:hasSkill emp:sk-aws, emp:sk-docker, emp:sk-sql ;
+  emp:minSalary 52000 ; dct:source "synthetic" .
+
+emp:cand-020 a emp:Candidate ;
+  foaf:name "Giulia Moretti" ; foaf:gender "female" ; foaf:age 25 ;
+  schema:nationality "IT" ; emp:hasDisability true ;
+  emp:hasLocation emp:loc-laquila ; emp:yearsOfExperience 2 ;
+  emp:hasSkill emp:sk-react, emp:sk-python ;
+  emp:minSalary 26000 ; dct:source "synthetic" .
+
+emp:cand-021 a emp:Candidate ;
+  foaf:name "Mohammed Hassan" ; foaf:gender "male" ; foaf:age 33 ;
+  schema:nationality "EG" ;
+  emp:hasLocation emp:loc-milan ; emp:yearsOfExperience 9 ;
+  emp:hasSkill emp:sk-java, emp:sk-pm ;
+  emp:minSalary 46000 ; dct:source "synthetic" .
+
+emp:cand-022 a emp:Candidate ;
+  foaf:name "Roberto Esposito" ; foaf:gender "male" ; foaf:age 48 ;
+  schema:nationality "IT" ;
+  emp:hasLocation emp:loc-rome ; emp:yearsOfExperience 22 ;
+  emp:hasSkill emp:sk-nursing ;
+  emp:minSalary 34000 ; dct:source "synthetic" .
+
+emp:cand-023 a emp:Candidate ;
+  foaf:name "Valentina Ricci" ; foaf:gender "female" ; foaf:age 29 ;
+  schema:nationality "IT" ;
+  emp:hasLocation emp:loc-milan ; emp:yearsOfExperience 6 ;
+  emp:hasSkill emp:sk-java, emp:sk-react, emp:sk-aws ;
+  emp:minSalary 42000 ; dct:source "synthetic" .
+
+emp:cand-024 a emp:Candidate ;
+  foaf:name "Petros Papadopoulos" ; foaf:gender "male" ; foaf:age 37 ;
+  schema:nationality "GR" ;
+  emp:hasLocation emp:loc-remote ; emp:yearsOfExperience 13 ;
+  emp:hasSkill emp:sk-sql, emp:sk-python, emp:sk-ml ;
+  emp:minSalary 55000 ; dct:source "synthetic" .
+
+emp:cand-025 a emp:Candidate ;
+  # Intentionally missing nationality/age to exercise data-quality policy
+  foaf:name "Anonymous Applicant" ; foaf:gender "female" ;
+  emp:hasLocation emp:loc-rome ; emp:yearsOfExperience 5 ;
+  emp:hasSkill emp:sk-java ;
+  emp:minSalary 30000 ; dct:source "scraped-public-board" .
+
+#################################################################
+# Job offers (18) — includes a few intentionally problematic ones
+#################################################################
+emp:job-001 a emp:JobOffer ;
+  dct:title "Backend Java Developer" ;
+  emp:postedBy emp:comp-acme ; emp:hasSector emp:sec-it ;
+  emp:hasLocation emp:loc-milan ; emp:remote false ;
+  emp:hasSkill emp:sk-java, emp:sk-sql, emp:sk-docker ;
+  emp:requiredExperience 3 ; emp:seniority "mid" ;
+  emp:salary 38000 ; emp:postedDate "2026-04-10"^^xsd:date ;
+  emp:disabilityFriendly true ; dct:source "company-portal" .
+
+emp:job-002 a emp:JobOffer ;
+  dct:title "Senior ML Engineer" ;
+  emp:postedBy emp:comp-quantai ; emp:hasSector emp:sec-it ;
+  emp:hasLocation emp:loc-turin ; emp:remote true ;
+  emp:hasSkill emp:sk-python, emp:sk-ml, emp:sk-aws ;
+  emp:requiredExperience 7 ; emp:seniority "senior" ;
+  emp:salary 70000 ; emp:postedDate "2026-04-15"^^xsd:date ;
+  emp:disabilityFriendly true ; dct:source "company-portal" .
+
+# >>> PROBLEMATIC: explicit age cap (ageism) <<<
+emp:job-003 a emp:JobOffer ;
+  dct:title "Junior Frontend Developer" ;
+  emp:postedBy emp:comp-startuplab ; emp:hasSector emp:sec-it ;
+  emp:hasLocation emp:loc-laquila ; emp:remote false ;
+  emp:hasSkill emp:sk-react ;
+  emp:requiredExperience 1 ; emp:seniority "junior" ;
+  emp:salary 24000 ; emp:postedDate "2026-04-20"^^xsd:date ;
+  emp:ageRangeMax 30 ;
+  dct:source "third-party-scraper" .
+
+# >>> PROBLEMATIC: gender preference <<<
+emp:job-004 a emp:JobOffer ;
+  dct:title "Logistics Operations Manager" ;
+  emp:postedBy emp:comp-logix ; emp:hasSector emp:sec-logistics ;
+  emp:hasLocation emp:loc-naples ; emp:remote false ;
+  emp:hasSkill emp:sk-pm ;
+  emp:requiredExperience 5 ; emp:seniority "senior" ;
+  emp:salary 45000 ; emp:postedDate "2026-04-12"^^xsd:date ;
+  emp:genderPreference "male" ;
+  dct:source "third-party-scraper" .
+
+emp:job-005 a emp:JobOffer ;
+  dct:title "Nurse - General Ward" ;
+  emp:postedBy emp:comp-medcare ; emp:hasSector emp:sec-health ;
+  emp:hasLocation emp:loc-rome ; emp:remote false ;
+  emp:hasSkill emp:sk-nursing ;
+  emp:requiredExperience 2 ; emp:seniority "mid" ;
+  emp:salary 28000 ; emp:postedDate "2026-04-18"^^xsd:date ;
+  emp:disabilityFriendly true ; dct:source "company-portal" .
+
+emp:job-006 a emp:JobOffer ;
+  dct:title "Cloud Architect" ;
+  emp:postedBy emp:comp-acme ; emp:hasSector emp:sec-it ;
+  emp:hasLocation emp:loc-milan ; emp:remote true ;
+  emp:hasSkill emp:sk-aws, emp:sk-docker, emp:sk-java ;
+  emp:requiredExperience 10 ; emp:seniority "senior" ;
+  emp:salary 75000 ; emp:postedDate "2026-04-22"^^xsd:date ;
+  emp:disabilityFriendly true ; dct:source "company-portal" .
+
+emp:job-007 a emp:JobOffer ;
+  dct:title "Financial Analyst" ;
+  emp:postedBy emp:comp-finhub ; emp:hasSector emp:sec-finance ;
+  emp:hasLocation emp:loc-milan ; emp:remote false ;
+  emp:hasSkill emp:sk-accounting, emp:sk-sql ;
+  emp:requiredExperience 4 ; emp:seniority "mid" ;
+  emp:salary 42000 ; emp:postedDate "2026-04-08"^^xsd:date ;
+  emp:disabilityFriendly true ; dct:source "company-portal" .
+
+# >>> PROBLEMATIC: nationality requirement <<<
+emp:job-008 a emp:JobOffer ;
+  dct:title "Government Contractor Developer" ;
+  emp:postedBy emp:comp-finhub ; emp:hasSector emp:sec-finance ;
+  emp:hasLocation emp:loc-rome ; emp:remote false ;
+  emp:hasSkill emp:sk-java, emp:sk-sql ;
+  emp:requiredExperience 5 ; emp:seniority "senior" ;
+  emp:salary 50000 ; emp:postedDate "2026-04-25"^^xsd:date ;
+  emp:nationalityReq "IT" ;
+  dct:source "third-party-scraper" .
+
+emp:job-009 a emp:JobOffer ;
+  dct:title "Teaching Assistant - Math" ;
+  emp:postedBy emp:comp-edusmart ; emp:hasSector emp:sec-edu ;
+  emp:hasLocation emp:loc-bologna ; emp:remote false ;
+  emp:hasSkill emp:sk-teaching ;
+  emp:requiredExperience 2 ; emp:seniority "mid" ;
+  emp:salary 25000 ; emp:postedDate "2026-04-30"^^xsd:date ;
+  emp:disabilityFriendly true ; dct:source "company-portal" .
+
+emp:job-010 a emp:JobOffer ;
+  dct:title "Data Engineer" ;
+  emp:postedBy emp:comp-quantai ; emp:hasSector emp:sec-it ;
+  emp:hasLocation emp:loc-remote ; emp:remote true ;
+  emp:hasSkill emp:sk-python, emp:sk-sql, emp:sk-aws ;
+  emp:requiredExperience 4 ; emp:seniority "mid" ;
+  emp:salary 48000 ; emp:postedDate "2026-05-02"^^xsd:date ;
+  emp:disabilityFriendly true ; dct:source "company-portal" .
+
+emp:job-011 a emp:JobOffer ;
+  dct:title "Semantic Web Engineer" ;
+  emp:postedBy emp:comp-startuplab ; emp:hasSector emp:sec-it ;
+  emp:hasLocation emp:loc-laquila ; emp:remote true ;
+  emp:hasSkill emp:sk-sparql, emp:sk-java ;
+  emp:requiredExperience 3 ; emp:seniority "mid" ;
+  emp:salary 36000 ; emp:postedDate "2026-05-05"^^xsd:date ;
+  emp:disabilityFriendly true ; dct:source "company-portal" .
+
+# >>> PROBLEMATIC: missing salary + provenance unclear <<<
+emp:job-012 a emp:JobOffer ;
+  dct:title "Sales Representative" ;
+  emp:postedBy emp:comp-logix ; emp:hasSector emp:sec-logistics ;
+  emp:hasLocation emp:loc-naples ; emp:remote false ;
+  emp:hasSkill emp:sk-pm ;
+  emp:requiredExperience 1 ; emp:seniority "junior" ;
+  emp:postedDate "2026-05-01"^^xsd:date ;
+  dct:source "unknown" .
+
+emp:job-013 a emp:JobOffer ;
+  dct:title "Healthcare Project Manager" ;
+  emp:postedBy emp:comp-medcare ; emp:hasSector emp:sec-health ;
+  emp:hasLocation emp:loc-rome ; emp:remote false ;
+  emp:hasSkill emp:sk-pm, emp:sk-nursing ;
+  emp:requiredExperience 8 ; emp:seniority "senior" ;
+  emp:salary 55000 ; emp:postedDate "2026-04-28"^^xsd:date ;
+  emp:disabilityFriendly true ; dct:source "company-portal" .
+
+emp:job-014 a emp:JobOffer ;
+  dct:title "Full-stack Developer" ;
+  emp:postedBy emp:comp-acme ; emp:hasSector emp:sec-it ;
+  emp:hasLocation emp:loc-milan ; emp:remote true ;
+  emp:hasSkill emp:sk-java, emp:sk-react, emp:sk-sql ;
+  emp:requiredExperience 3 ; emp:seniority "mid" ;
+  emp:salary 40000 ; emp:postedDate "2026-05-04"^^xsd:date ;
+  emp:disabilityFriendly true ; dct:source "company-portal" .
+
+emp:job-015 a emp:JobOffer ;
+  dct:title "Accountant" ;
+  emp:postedBy emp:comp-finhub ; emp:hasSector emp:sec-finance ;
+  emp:hasLocation emp:loc-milan ; emp:remote false ;
+  emp:hasSkill emp:sk-accounting ;
+  emp:requiredExperience 5 ; emp:seniority "mid" ;
+  emp:salary 38000 ; emp:postedDate "2026-04-14"^^xsd:date ;
+  emp:disabilityFriendly true ; dct:source "company-portal" .
+
+# >>> PROBLEMATIC: overly narrow age range (younger only) <<<
+emp:job-016 a emp:JobOffer ;
+  dct:title "Trainee Software Engineer" ;
+  emp:postedBy emp:comp-startuplab ; emp:hasSector emp:sec-it ;
+  emp:hasLocation emp:loc-laquila ; emp:remote false ;
+  emp:hasSkill emp:sk-python ;
+  emp:requiredExperience 0 ; emp:seniority "junior" ;
+  emp:salary 20000 ; emp:postedDate "2026-05-06"^^xsd:date ;
+  emp:ageRangeMin 20 ; emp:ageRangeMax 26 ;
+  dct:source "third-party-scraper" .
+
+emp:job-017 a emp:JobOffer ;
+  dct:title "Online Tutor - Coding" ;
+  emp:postedBy emp:comp-edusmart ; emp:hasSector emp:sec-edu ;
+  emp:hasLocation emp:loc-remote ; emp:remote true ;
+  emp:hasSkill emp:sk-python, emp:sk-teaching ;
+  emp:requiredExperience 2 ; emp:seniority "mid" ;
+  emp:salary 26000 ; emp:postedDate "2026-05-07"^^xsd:date ;
+  emp:disabilityFriendly true ; dct:source "company-portal" .
+
+emp:job-018 a emp:JobOffer ;
+  dct:title "DevOps Engineer" ;
+  emp:postedBy emp:comp-quantai ; emp:hasSector emp:sec-it ;
+  emp:hasLocation emp:loc-turin ; emp:remote true ;
+  emp:hasSkill emp:sk-docker, emp:sk-aws ;
+  emp:requiredExperience 5 ; emp:seniority "senior" ;
+  emp:salary 52000 ; emp:postedDate "2026-05-08"^^xsd:date ;
+  emp:disabilityFriendly true ; dct:source "company-portal" .

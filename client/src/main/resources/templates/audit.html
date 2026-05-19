@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Audit trail')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main>
+    <h2>Audit trail</h2>
+    <p class="muted">Every EaaS evaluation produces an immutable audit record (also persisted on disk as JSONL).</p>
+    <div class="card">
+        <table>
+            <thead>
+            <tr><th>Audit ID</th><th>Timestamp</th><th>Candidate</th><th>Job</th><th>Risk</th><th>Decision</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="r : ${records}">
+                <td><a th:href="@{/audit/{id}(id=${r.auditId})}" th:text="${r.auditId}">audit-…</a></td>
+                <td th:text="${r.timestamp}">ts</td>
+                <td th:text="${r.request.candidateId}">cand</td>
+                <td th:text="${r.request.jobId}">job</td>
+                <td th:class="'risk-' + ${r.riskLevel}" th:text="${r.riskLevel}">LOW</td>
+                <td><span th:class="'decision-' + ${r.decision}" th:text="${r.decision}">PROCEED</span></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(records)}"><td colspan="6" class="muted">No audit records yet.</td></tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

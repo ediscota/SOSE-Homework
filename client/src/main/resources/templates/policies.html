@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Policies')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main>
+    <h2>Active ethical policies</h2>
+    <p class="muted">Loaded by the EaaS from external JSON files. Severity, parameters and required actions can be edited without redeploying.</p>
+    <div th:each="p : ${policies}" class="card">
+        <h3 style="margin:0 0 0.3rem"><span th:text="${p.name}">Name</span></h3>
+        <p class="muted">id <code th:text="${p.id}">P-X</code> · rule <code th:text="${p.rule}">rule</code> · severity <span th:class="'risk-' + ${p.severity}" th:text="${p.severity}">HIGH</span></p>
+        <p th:text="${p.description}">description</p>
+        <p class="muted">Required actions:</p>
+        <ul><li th:each="a : ${p.requiredActions}" th:text="${a}">action</li></ul>
+    </div>
+</main>
+</body>
+</html>

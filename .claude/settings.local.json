@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(java -version)",
+      "Bash(mvn -version)",
+      "Bash(mvn -q -DskipTests clean compile)",
+      "Bash(mvn -DskipTests clean compile)",
+      "Bash(mvn -pl daas-service -q spring-boot:run)",
+      "Bash(curl -fs http://localhost:8081/api/jobs/job-001)",
+      "PowerShell(Get-NetTCPConnection -LocalPort 8081 -State Listen -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue; \"Killed PID $\\($_.OwningProcess\\)\" }; \"done\")",
+      "Bash(curl -s http://localhost:8081/api/jobs/job-003)",
+      "Bash(curl -s http://localhost:8081/api/jobs/risky)",
+      "Bash(python3 -c \"import json,sys; r=json.load\\(sys.stdin\\); print\\(f'{len\\(r\\)} risky offers'\\); [print\\(f' - {o[\\\\\"id\\\\\"]}: {o[\\\\\"title\\\\\"]} ageMin={o.get\\(\\\\\"ageRangeMin\\\\\"\\)} ageMax={o.get\\(\\\\\"ageRangeMax\\\\\"\\)} genderPref={o.get\\(\\\\\"genderPreference\\\\\"\\)} natReq={o.get\\(\\\\\"nationalityRequirement\\\\\"\\)} src={o.get\\(\\\\\"source\\\\\"\\)}'\\) for o in r]\")",
+      "Bash(curl -s http://localhost:8081/api/match/candidate/cand-001)",
+      "Bash(python3 -c \"import json,sys; r=json.load\\(sys.stdin\\); print\\(f'{len\\(r\\)} matches total'\\); [print\\(f' - {m[\\\\\"jobId\\\\\"]} score={m[\\\\\"score\\\\\"]} shared={m[\\\\\"sharedSkills\\\\\"]} loc={m[\\\\\"locationCompatible\\\\\"]} exp={m[\\\\\"experienceSufficient\\\\\"]}'\\) for m in r[:5]]\")",
+      "Bash(curl -fs http://localhost:8082/api/ethics/policies)",
+      "Bash(curl -s -X POST http://localhost:8082/api/ethics/evaluate -H 'Content-Type: application/json' -d @docs/example-requests/req-proceed.json)",
+      "Bash(python3 -m json.tool)",
+      "Bash(curl -s -X POST http://localhost:8082/api/ethics/evaluate -H 'Content-Type: application/json' -d @docs/example-requests/req-reject.json)",
+      "Bash(curl -s http://localhost:8082/api/audit)",
+      "Bash(python3 -c \"import json,sys; r=json.load\\(sys.stdin\\); print\\(f'{len\\(r\\)} audit records'\\); [print\\(f' - {x[\\\\\"auditId\\\\\"]} → {x[\\\\\"decision\\\\\"]} \\({x[\\\\\"riskLevel\\\\\"]}\\) for {x[\\\\\"request\\\\\"][\\\\\"candidateId\\\\\"]}/{x[\\\\\"request\\\\\"][\\\\\"jobId\\\\\"]}'\\) for x in r]\")",
+      "Bash(python3 -c \"import sys,json; r=json.loads\\(sys.stdin.read\\(\\)\\); print\\('auditId:', r['auditId']\\); print\\('decision:', r['decision']\\); print\\('riskLevel:', r['riskLevel']\\); print\\('candidateId:', r['request']['candidateId']\\); print\\('jobId:', r['request']['jobId']\\); print\\('findings:', len\\(r['findings']\\)\\)\")"
+    ]
+  }
+}

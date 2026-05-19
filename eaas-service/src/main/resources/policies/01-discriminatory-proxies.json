@@ -1,0 +1,15 @@
+{
+  "id": "P-DISCR-001",
+  "name": "Prohibition of discriminatory proxies in selection",
+  "description": "A job offer must not filter candidates by protected attributes such as age, gender, or nationality. These fields constitute prohibited discriminatory proxies under EU Directive 2000/78/EC and Italian Codice Pari Opportunità (D.Lgs. 198/2006).",
+  "rule": "discriminatory_proxy_in_offer",
+  "severity": "CRITICAL",
+  "parameters": {
+    "forbiddenFields": ["ageRangeMin", "ageRangeMax", "genderPreference", "nationalityRequirement"]
+  },
+  "requiredActions": [
+    "Hide the offer from automated recommendations.",
+    "Notify the offer's owner to remove the discriminatory field.",
+    "Escalate to compliance officer."
+  ]
+}

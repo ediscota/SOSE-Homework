@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Recommendations')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main>
+    <a th:href="@{/}" class="btn btn-secondary">← Back</a>
+    <h2>Recommendations for <span th:text="${candidate.name}">Candidate</span></h2>
+    <div class="card">
+        <p class="muted">Each recommendation comes from a SPARQL query that combines skill overlap, location compatibility and experience requirements. Click <strong>Evaluate</strong> to ask the EaaS whether the recommendation is ethically safe to show.</p>
+        <table>
+            <thead>
+            <tr><th>Job</th><th>Title</th><th>Shared skills</th><th>Loc OK</th><th>Exp OK</th><th>Score</th><th></th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="m : ${matches}">
+                <td><code th:text="${m.jobId}">job-001</code></td>
+                <td th:text="${m.jobTitle}">Title</td>
+                <td>
+                    <span th:each="s : ${m.sharedSkills}" class="badge badge-skill" th:text="${s}">skill</span>
+                    (<span th:text="${m.sharedSkillCount}">3</span>)
+                </td>
+                <td th:text="${m.locationCompatible} ? '✓' : '✗'">✓</td>
+                <td th:text="${m.experienceSufficient} ? '✓' : '✗'">✓</td>
+                <td th:text="${m.score}">4.0</td>
+                <td>
+                    <form th:action="@{/evaluate}" method="post" style="margin:0">
+                        <input type="hidden" name="candidateId" th:value="${candidate.id}"/>
+                        <input type="hidden" name="jobId" th:value="${m.jobId}"/>
+                        <button class="btn" type="submit">Evaluate</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(matches)}">
+                <td colspan="7" class="muted">No matches.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

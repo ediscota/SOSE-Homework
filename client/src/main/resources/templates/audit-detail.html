@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Audit record')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main>
+    <a th:href="@{/audit}" class="btn btn-secondary">← Back</a>
+    <h2>Audit record <code th:text="${record.auditId}">audit-…</code></h2>
+    <div class="card">
+        <pre th:text="${record}">record</pre>
+    </div>
+</main>
+</body>
+</html>
