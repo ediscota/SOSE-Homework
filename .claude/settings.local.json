@@ -22,7 +22,21 @@
       "Bash(python3 -c \"import sys,json; r=json.loads\\(sys.stdin.read\\(\\)\\); print\\('auditId:', r['auditId']\\); print\\('decision:', r['decision']\\); print\\('riskLevel:', r['riskLevel']\\); print\\('candidateId:', r['request']['candidateId']\\); print\\('jobId:', r['request']['jobId']\\); print\\('findings:', len\\(r['findings']\\)\\)\")",
       "Bash(mvn -pl daas-service -DskipTests clean compile)",
       "Bash(python3 -c \"import json,sys; r=json.load\\(sys.stdin\\); print\\(f'{len\\(r\\)} risky offers'\\); [print\\(f' {o[\\\\\"id\\\\\"]}: {o[\\\\\"title\\\\\"]}'\\) for o in r]\")",
-      "Bash(python3 -c \"import json,sys; r=json.load\\(sys.stdin\\); print\\(f'{len\\(r\\)} matches'\\)\")"
+      "Bash(python3 -c \"import json,sys; r=json.load\\(sys.stdin\\); print\\(f'{len\\(r\\)} matches'\\)\")",
+      "Bash(node -e \"require\\('pptxgenjs'\\); console.log\\('OK'\\)\")",
+      "Bash(npm install *)",
+      "Bash(NODE_PATH=\"C:/Users/edoar/AppData/Roaming/npm/node_modules\" node slides/generate.js)",
+      "Bash(python ../skills-plugin/c9e26414-3140-471e-9157-e9e3afaf162a/45b08815-5c64-474b-90f2-2cbee201bc4f/skills/pptx/scripts/office/soffice.py --headless --convert-to pdf SoSE-Employment-DaaS-EaaS.pptx)",
+      "Bash(where soffice *)",
+      "Bash(where libreoffice *)",
+      "Bash(where pdftoppm *)",
+      "Bash(Get-ChildItem \"C:\\\\Program Files\\\\LibreOffice\" -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object Name)",
+      "Bash(Get-ChildItem \"C:\\\\Program Files \\(x86\\)\\\\LibreOffice\" -ErrorAction SilentlyContinue)",
+      "PowerShell(python -c \"import pptx; print\\('pptx ok'\\)\" 2>&1)",
+      "PowerShell(python -c \"from PIL import Image; print\\('PIL ok'\\)\" 2>&1)",
+      "Bash(python check_slides.py)",
+      "Bash(python extract_text.py)"
     ]
   }
 }
