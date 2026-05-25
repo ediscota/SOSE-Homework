@@ -1,5 +1,5 @@
 // SoSE Midterm – Employment DaaS + EaaS – Slide generator
-// 26 slides, ~30-36 min for 3 members
+// 22 slides, ~30-36 min for 3 members
 // Run: node slides/generate.js
 
 "use strict";
@@ -130,7 +130,7 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
   s.addText([
     { text: "Service-Oriented Software Engineering  ·  A.Y. 2025/2026", options: { breakLine: true } },
     { text: "Università degli Studi dell'Aquila", options: { breakLine: true } },
-    { text: "Gruppo di 3 studenti" },
+    { text: "Group of 3 students" },
   ], {
     x: 0.5, y: 3.6, w: 9.3, h: 1.2,
     fontSize: 13, color: "9FB4CC", fontFace: F.body, margin: 0,
@@ -153,9 +153,9 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
   });
 
   const members = [
-    { label: "Membro 1", color: "2C5FDC", topics: ["Dominio & Motivazione", "Architettura Applicazione", "Dataset RDF & Ontologia", "Query SPARQL", "API REST DaaS"] },
-    { label: "Membro 2", color: "2F8F4E", topics: ["EaaS – Workflow & Architettura", "Politiche Etiche (4 policies)", "Scenario PROCEED", "Scenario REJECT"] },
-    { label: "Membro 3", color: "9B59B6", topics: ["Audit Trail & Provenienza", "Integrazione DaaS ↔ EaaS", "Live Demo", "Riflessione Critica"] },
+    { label: "Member 1", color: "2C5FDC", topics: ["Domain & Motivation", "Application Architecture", "RDF Dataset & Ontology", "SPARQL Queries", "DaaS REST APIs"] },
+    { label: "Member 2", color: "2F8F4E", topics: ["EaaS – Workflow & Architecture", "Ethical Policies (4 policies)", "Scenario PROCEED", "Scenario REJECT"] },
+    { label: "Member 3", color: "9B59B6", topics: ["Audit Trail & Provenance", "DaaS ↔ EaaS Integration", "Live Demo", "Critical Reflection"] },
   ];
 
   members.forEach((m, i) => {
@@ -183,7 +183,7 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
     });
   });
 
-  s.addText("~10-12 min a testa  ·  30-36 min totali", {
+  s.addText("~10-12 min each  ·  30-36 min total", {
     x: 0.5, y: 5.2, w: 9, h: 0.3,
     fontSize: 10, color: "9FB4CC", align: "center", fontFace: F.body, italic: true, margin: 0,
   });
@@ -198,40 +198,40 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
   s.addShape(pres.shapes.RECTANGLE, {
     x: 0, y: 0, w: 0.22, h: 5.625, fill: { color: C.blue }, line: { color: C.blue, width: 0 },
   });
-  s.addText("Sezione 1", { x: 0.5, y: 1.3, w: 9, h: 0.45, fontSize: 13, color: "9FB4CC", fontFace: F.body, italic: true, margin: 0 });
-  s.addText("Dominio, Dataset\ne DaaS", {
+  s.addText("Section 1", { x: 0.5, y: 1.3, w: 9, h: 0.45, fontSize: 13, color: "9FB4CC", fontFace: F.body, italic: true, margin: 0 });
+  s.addText("Domain, Dataset\nand DaaS", {
     x: 0.5, y: 1.75, w: 9, h: 2.0,
     fontSize: 40, bold: true, color: C.white, fontFace: F.title, margin: 0,
   });
-  s.addText("Membro 1  ·  ~10-12 minuti", {
+  s.addText("Member 1  ·  ~10-12 minutes", {
     x: 0.5, y: 4.5, w: 9, h: 0.4,
     fontSize: 12, color: "9FB4CC", fontFace: F.body, margin: 0,
   });
 })();
 
 // ══════════════════════════════════════════════════════════════
-//  SLIDE 4 – DOMINIO & MOTIVAZIONE
+//  SLIDE 4 – DOMAIN & MOTIVATION
 // ══════════════════════════════════════════════════════════════
 (function () {
   const s = pres.addSlide();
   lightSlide(s);
-  addSectionChip(s, "Dominio");
-  addTitle(s, "Dominio scelto: Employment");
+  addSectionChip(s, "Domain");
+  addTitle(s, "Chosen Domain: Employment");
   addRule(s);
   addPageNum(s, 4);
 
   // left column: motivation
   card(s, 0.4, 1.45, 4.35, 3.8, C.ice);
-  s.addText("Perché employment?", {
+  s.addText("Why Employment?", {
     x: 0.6, y: 1.6, w: 3.9, h: 0.4,
     fontSize: 14, bold: true, color: C.navy, fontFace: F.title, margin: 0,
   });
   s.addText([
-    { text: "Dominio ricco di dati strutturati", options: { bullet: true, breakLine: true } },
-    { text: "Decisioni ad alto impatto sulla vita delle persone", options: { bullet: true, breakLine: true } },
-    { text: "Forte rischio di bias e discriminazione algoritmica", options: { bullet: true, breakLine: true } },
-    { text: "Esplicitamente citato nel testo del compito", options: { bullet: true, breakLine: true } },
-    { text: "Rilevanza con norme esistenti (D.Lgs. 198/2006, GDPR, UN CRPD)", options: { bullet: true } },
+    { text: "Rich structured data domain", options: { bullet: true, breakLine: true } },
+    { text: "High-impact decisions affecting people's lives", options: { bullet: true, breakLine: true } },
+    { text: "High risk of algorithmic bias and discrimination", options: { bullet: true, breakLine: true } },
+    { text: "Explicitly mentioned in the assignment specification", options: { bullet: true, breakLine: true } },
+    { text: "Relevant to existing regulations (D.Lgs. 198/2006, GDPR, UN CRPD)", options: { bullet: true } },
   ], {
     x: 0.6, y: 2.1, w: 4.0, h: 3.0,
     fontSize: 12, color: C.text, fontFace: F.body, valign: "top",
@@ -239,16 +239,16 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
 
   // right column: use case
   card(s, 4.9, 1.45, 4.7, 3.8, C.ice);
-  s.addText("Use case del progetto", {
+  s.addText("Project Use Case", {
     x: 5.1, y: 1.6, w: 4.3, h: 0.4,
     fontSize: 14, bold: true, color: C.navy, fontFace: F.title, margin: 0,
   });
 
   const steps = [
-    { n: "1", t: "CANDIDATO", d: "Cerca lavoro nel sistema" },
-    { n: "2", t: "DaaS", d: "Raccomanda offerte via SPARQL" },
-    { n: "3", t: "EaaS", d: "Valuta la raccomandazione" },
-    { n: "4", t: "AUDIT", d: "Ogni decisione è tracciata" },
+    { n: "1", t: "CANDIDATE", d: "Searches for jobs in the system" },
+    { n: "2", t: "DaaS", d: "Recommends offers via SPARQL" },
+    { n: "3", t: "EaaS", d: "Evaluates the recommendation" },
+    { n: "4", t: "AUDIT", d: "Every decision is tracked" },
   ];
   steps.forEach((st, i) => {
     const y = 2.05 + i * 0.82;
@@ -268,21 +268,21 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
 })();
 
 // ══════════════════════════════════════════════════════════════
-//  SLIDE 5 – ARCHITETTURA
+//  SLIDE 5 – ARCHITECTURE
 // ══════════════════════════════════════════════════════════════
 (function () {
   const s = pres.addSlide();
   lightSlide(s);
-  addSectionChip(s, "Architettura");
-  addTitle(s, "Architettura dell'applicazione");
+  addSectionChip(s, "Architecture");
+  addTitle(s, "Application Architecture");
   addRule(s);
   addPageNum(s, 5);
 
   // Three service boxes
   const services = [
-    { label: "CLIENT", port: ":8080", tech: "Spring Boot\nThymeleaf", color: "9B59B6", desc: "Web UI: browsing candidati, raccomandazioni, valutazione" },
-    { label: "DaaS", port: ":8081", tech: "Spring Boot\nApache Jena 5.1\nRDF/XML + SPARQL", color: C.blue, desc: "Dataset RDF, query SPARQL, 8 endpoint REST JSON" },
-    { label: "EaaS", port: ":8082", tech: "Spring Boot\nPolicy engine\nAudit JSONL", color: C.green, desc: "Carica policy JSON, valuta richieste, produce decisioni e audit" },
+    { label: "CLIENT", port: ":8080", tech: "Spring Boot\nThymeleaf", color: "9B59B6", desc: "Web UI: candidate browsing, recommendations, evaluation" },
+    { label: "DaaS", port: ":8081", tech: "Spring Boot\nApache Jena 5.1\nRDF/XML + SPARQL", color: C.blue, desc: "RDF dataset, SPARQL queries, 8 REST JSON endpoints" },
+    { label: "EaaS", port: ":8082", tech: "Spring Boot\nPolicy engine\nAudit JSONL", color: C.green, desc: "Loads JSON policies, evaluates requests, produces decisions and audit" },
   ];
 
   services.forEach((svc, i) => {
@@ -301,28 +301,28 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
     s.addText(label, { x: x - 0.3, y: 3.45, w: 0.9, h: 0.5, fontSize: 8, color: C.muted, align: "center", fontFace: F.body, italic: true, margin: 0 });
   });
 
-  s.addText("⚠  L'EaaS ri-scarica sempre i dati dal DaaS: non si fida del chiamante", {
+  s.addText("⚠  EaaS always re-fetches data from DaaS: it never trusts the caller", {
     x: 0.4, y: 5.15, w: 9.2, h: 0.3,
     fontSize: 10, color: C.orange, italic: true, fontFace: F.body, margin: 0,
   });
 })();
 
 // ══════════════════════════════════════════════════════════════
-//  SLIDE 6 – DATASET RDF – ONTOLOGIA
+//  SLIDE 6 – RDF DATASET – ONTOLOGY
 // ══════════════════════════════════════════════════════════════
 (function () {
   const s = pres.addSlide();
   lightSlide(s);
-  addSectionChip(s, "Dataset RDF");
-  addTitle(s, "Dataset RDF/XML — Ontologia");
+  addSectionChip(s, "RDF Dataset");
+  addTitle(s, "RDF/XML Dataset — Ontology");
   addRule(s);
   addPageNum(s, 6);
 
   // stats row
   const stats = [
-    { n: "635", l: "Triple RDF" }, { n: "25", l: "Candidati" },
-    { n: "18", l: "Offerte" },    { n: "12", l: "Skill" },
-    { n: "5", l: "Settori" },     { n: "7", l: "Aziende" },
+    { n: "635", l: "RDF Triples" }, { n: "25", l: "Candidates" },
+    { n: "18", l: "Offers" },       { n: "12", l: "Skills" },
+    { n: "5",  l: "Sectors" },      { n: "7",  l: "Companies" },
   ];
   stats.forEach((st, i) => {
     const x = 0.4 + i * 1.55;
@@ -337,18 +337,18 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
   s.addText("http://sose.univaq.it/employment#  (prefix emp:)", {
     x: 1.4, y: 2.62, w: 3.1, h: 0.4, fontSize: 10, color: C.blue, fontFace: "Consolas", bold: true, margin: 0,
   });
-  s.addText("Riuso: foaf: · schema: · dct: · xsd:", {
+  s.addText("Reused: foaf: · schema: · dct: · xsd:", {
     x: 0.55, y: 2.88, w: 4.0, h: 0.28, fontSize: 9, color: C.muted, fontFace: F.body, italic: true, margin: 0,
   });
 
   // classes list
   const classes = [
     ["emp:Candidate", "subClassOf foaf:Person", C.blue],
-    ["emp:JobOffer", "offerta di lavoro", C.blue],
-    ["emp:Company", "subClassOf schema:Organization", C.blue],
-    ["emp:Skill", "competenza", C.blue],
-    ["emp:Sector", "settore lavorativo", C.blue],
-    ["emp:Location", "luogo geografico", C.blue],
+    ["emp:JobOffer",  "job offer",              C.blue],
+    ["emp:Company",  "subClassOf schema:Organization", C.blue],
+    ["emp:Skill",    "skill / competence",      C.blue],
+    ["emp:Sector",   "work sector",             C.blue],
+    ["emp:Location", "geographic location",     C.blue],
   ];
   classes.forEach(([cls, note, col], i) => {
     const row = i < 3 ? i : i - 3;
@@ -362,31 +362,31 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
 })();
 
 // ══════════════════════════════════════════════════════════════
-//  SLIDE 7 – DATASET: DATI PROBLEMATICI
+//  SLIDE 7 – DATASET: DISCRIMINATORY DATA
 // ══════════════════════════════════════════════════════════════
 (function () {
   const s = pres.addSlide();
   lightSlide(s);
-  addSectionChip(s, "Dataset RDF", C.alert);
-  addTitle(s, "Proxy discriminatori nel dataset");
+  addSectionChip(s, "RDF Dataset", C.alert);
+  addTitle(s, "Discriminatory Proxies in the Dataset");
   addRule(s);
   addPageNum(s, 7);
 
-  s.addText("Alcune offerte contengono campi intenzionalmente problematici — progettati per esercitare le policy EaaS", {
+  s.addText("Some offers intentionally contain problematic fields — designed to exercise EaaS policies", {
     x: 0.4, y: 1.4, w: 9.2, h: 0.35,
     fontSize: 11, italic: true, color: C.muted, fontFace: F.body, margin: 0,
   });
 
   const rows = [
-    ["job-003", "Junior Frontend Dev", "emp:ageRangeMax = 30", "Ageism", C.alert],
-    ["job-004", "Logistics Manager",   "emp:genderPreference = male", "Discriminazione di genere", C.alert],
-    ["job-008", "Gov. Contractor Dev", "emp:nationalityReq = IT", "Discriminazione nazionale", C.alert],
-    ["job-016", "Trainee Sw. Eng.",    "emp:ageRangeMin=20, ageRangeMax=26", "Ageism (fascia stretta)", C.alert],
-    ["job-012", "Sales Representative","salary mancante, source=unknown", "Qualità dati scadente", C.orange],
+    ["job-003", "Junior Frontend Dev", "emp:ageRangeMax = 30",                "Ageism",                   C.alert],
+    ["job-004", "Logistics Manager",   "emp:genderPreference = male",          "Gender discrimination",    C.alert],
+    ["job-008", "Gov. Contractor Dev", "emp:nationalityReq = IT",              "Nationality discrimination",C.alert],
+    ["job-016", "Trainee Sw. Eng.",    "emp:ageRangeMin=20, ageRangeMax=26",   "Ageism (narrow age band)", C.alert],
+    ["job-012", "Sales Representative","salary missing, source=unknown",       "Poor data quality",        C.orange],
   ];
 
   // header
-  const headers = ["ID Offerta", "Titolo", "Campo problematico", "Tipo violazione"];
+  const headers = ["Offer ID", "Title", "Problematic field", "Violation type"];
   const colW = [1.1, 2.1, 3.1, 2.7];
   const startX = 0.4;
   let y = 1.88;
@@ -413,7 +413,7 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
     });
   });
 
-  badge(s, 0.4, 5.15, 3.0, "5 offerte flaggate da /api/jobs/risky", C.alert, C.white);
+  badge(s, 0.4, 5.15, 3.0, "5 offers flagged by /api/jobs/risky", C.alert, C.white);
 })();
 
 // ══════════════════════════════════════════════════════════════
@@ -423,12 +423,12 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
   const s = pres.addSlide();
   lightSlide(s);
   addSectionChip(s, "SPARQL");
-  addTitle(s, "Query SPARQL — esempi");
+  addTitle(s, "SPARQL Queries — Examples");
   addRule(s);
   addPageNum(s, 8);
 
   // Query 1 – basic
-  s.addText("Query 1 · Offerte per settore", {
+  s.addText("Query 1 · Offers by sector", {
     x: 0.4, y: 1.45, w: 9.2, h: 0.35,
     fontSize: 12, bold: true, color: C.navy, fontFace: F.title, margin: 0,
   });
@@ -444,7 +444,7 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
   );
 
   // Query 2 – multi-condition
-  s.addText("Query 2 · Match multi-condizione (skill overlap + location + esperienza)", {
+  s.addText("Query 2 · Multi-condition match (skill overlap + location + experience)", {
     x: 0.4, y: 3.28, w: 9.2, h: 0.35,
     fontSize: 12, bold: true, color: C.navy, fontFace: F.title, margin: 0,
   });
@@ -475,14 +475,14 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
   addPageNum(s, 9);
 
   const endpoints = [
-    ["GET", "/api/candidates",           "Lista tutti i candidati"],
-    ["GET", "/api/candidates/{id}",       "Singolo candidato per ID"],
-    ["GET", "/api/jobs",                  "Ricerca offerte (sector, location, minSalary, remote) — SPARQL multi-condizione"],
-    ["GET", "/api/jobs/{id}",             "Singola offerta per ID"],
-    ["GET", "/api/jobs/sector/{sector}",  "Offerte per settore"],
-    ["GET", "/api/jobs/location/{loc}",   "Offerte per città"],
-    ["GET", "/api/jobs/risky",            "Offerte con proxy discriminatori o provenienza non verificata"],
-    ["GET", "/api/match/candidate/{id}",  "Raccomandazioni per candidato (skill + location + esperienza)"],
+    ["GET", "/api/candidates",           "List all candidates"],
+    ["GET", "/api/candidates/{id}",       "Single candidate by ID"],
+    ["GET", "/api/jobs",                  "Search offers (sector, location, minSalary, remote) — multi-condition SPARQL"],
+    ["GET", "/api/jobs/{id}",             "Single offer by ID"],
+    ["GET", "/api/jobs/sector/{sector}",  "Offers by sector"],
+    ["GET", "/api/jobs/location/{loc}",   "Offers by city"],
+    ["GET", "/api/jobs/risky",            "Offers with discriminatory proxies or unverified provenance"],
+    ["GET", "/api/match/candidate/{id}",  "Recommendations for candidate (skill + location + experience)"],
   ];
 
   endpoints.forEach((e, i) => {
@@ -502,18 +502,18 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
 })();
 
 // ══════════════════════════════════════════════════════════════
-//  SLIDE 10 – SEZIONE 2 divider
+//  SLIDE 10 – SECTION 2 divider
 // ══════════════════════════════════════════════════════════════
 (function () {
   const s = pres.addSlide();
   darkSlide(s);
   s.addShape(pres.shapes.RECTANGLE, { x: 0, y: 0, w: 0.22, h: 5.625, fill: { color: C.green }, line: { color: C.green, width: 0 } });
-  s.addText("Sezione 2", { x: 0.5, y: 1.3, w: 9, h: 0.45, fontSize: 13, color: "9FB4CC", fontFace: F.body, italic: true, margin: 0 });
+  s.addText("Section 2", { x: 0.5, y: 1.3, w: 9, h: 0.45, fontSize: 13, color: "9FB4CC", fontFace: F.body, italic: true, margin: 0 });
   s.addText("EaaS — Ethics\nas a Service", {
     x: 0.5, y: 1.75, w: 9, h: 2.0,
     fontSize: 40, bold: true, color: C.white, fontFace: F.title, margin: 0,
   });
-  s.addText("Membro 2  ·  ~10-12 minuti", {
+  s.addText("Member 2  ·  ~10-12 minutes", {
     x: 0.5, y: 4.5, w: 9, h: 0.4,
     fontSize: 12, color: "9FB4CC", fontFace: F.body, margin: 0,
   });
@@ -526,16 +526,16 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
   const s = pres.addSlide();
   lightSlide(s);
   addSectionChip(s, "EaaS", C.green);
-  addTitle(s, "EaaS — Workflow della valutazione");
+  addTitle(s, "EaaS — Evaluation Workflow");
   addRule(s);
   addPageNum(s, 11);
 
   const steps = [
-    { n: "1", t: "Richiesta strutturata", d: "Il client invia: action, candidateId, jobId,\nrequester, purpose, declaredRisk (ignorato)", color: C.blue },
-    { n: "2", t: "Fetch dati canonici dal DaaS", d: "EaaS scarica candidato e offerta direttamente\ndal DaaS — mai fidarsi del chiamante", color: C.orange },
-    { n: "3", t: "Case Analysis — Policy Engine", d: "Ogni policy viene applicata ai dati reali.\nProduce findings con severity e evidence", color: C.amber },
-    { n: "4", t: "Governance Decision", d: "DecisionMaker aggrega i findings:\nCRITICAL→REJECT, HIGH→ESCALATE, MEDIUM→REVISE, niente→PROCEED", color: C.green },
-    { n: "5", t: "Audit e risposta", d: "AuditRecord salvato su memoria e JSONL.\nRisposta completa con provenance e required actions", color: "9B59B6" },
+    { n: "1", t: "Structured Request", d: "The client sends: action, candidateId, jobId,\nrequester, purpose, declaredRisk (ignored)", color: C.blue },
+    { n: "2", t: "Fetch Canonical Data from DaaS", d: "EaaS fetches candidate and offer directly\nfrom DaaS — never trust the caller", color: C.orange },
+    { n: "3", t: "Case Analysis — Policy Engine", d: "Each policy is applied to the real data.\nProduces findings with severity and evidence", color: C.amber },
+    { n: "4", t: "Governance Decision", d: "DecisionMaker aggregates findings:\nCRITICAL→REJECT, HIGH→ESCALATE, MEDIUM→REVISE, none→PROCEED", color: C.green },
+    { n: "5", t: "Audit and Response", d: "AuditRecord saved to memory and JSONL.\nFull response with provenance and required actions", color: "9B59B6" },
   ];
 
   steps.forEach((st, i) => {
@@ -552,13 +552,13 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
 })();
 
 // ══════════════════════════════════════════════════════════════
-//  SLIDE 12 – STRUTTURA RICHIESTA EaaS
+//  SLIDE 12 – EVALUATIONREQUEST STRUCTURE
 // ══════════════════════════════════════════════════════════════
 (function () {
   const s = pres.addSlide();
   lightSlide(s);
   addSectionChip(s, "EaaS", C.green);
-  addTitle(s, "EvaluationRequest — struttura");
+  addTitle(s, "EvaluationRequest — Structure");
   addRule(s);
   addPageNum(s, 12);
 
@@ -572,7 +572,7 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
     "  \"requester\": \"ui-user:edoardo\",\n" +
     "  \"purpose\": \"show recommendation\",\n" +
     "\n" +
-    "  // EaaS ignora questo campo!\n" +
+    "  // EaaS ignores this field!\n" +
     "  \"declaredRisk\": \"LOW\"\n" +
     "}",
     { x: 0.55, y: 1.5, w: 4.8, h: 3.75, fontSize: 11, color: "86EFAC", fontFace: "Consolas", valign: "top", margin: 0 }
@@ -580,10 +580,10 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
 
   // annotations
   const notes = [
-    { y: 1.6, text: "Tipo di azione richiesta", color: C.blue },
-    { y: 2.1, text: "IDs — EaaS li usa per scaricare\ni dati veri dal DaaS", color: C.blue },
-    { y: 2.9, text: "Trasparenza: chi chiede e perché", color: C.green },
-    { y: 3.65, text: "⚠ Non trusted — l'EaaS\nricalcola il rischio autonomamente", color: C.alert },
+    { y: 1.6, text: "Type of requested action", color: C.blue },
+    { y: 2.1, text: "IDs — EaaS uses them to fetch\nthe real data from DaaS", color: C.blue },
+    { y: 2.9, text: "Transparency: who requests and why", color: C.green },
+    { y: 3.65, text: "⚠ Not trusted — EaaS\nrecalculates risk autonomously", color: C.alert },
   ];
   notes.forEach(n => {
     s.addShape(pres.shapes.LINE, { x: 5.5, y: n.y + 0.05, w: 0.6, h: 0, line: { color: n.color, width: 1, dashType: "dash" } });
@@ -592,17 +592,17 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
 })();
 
 // ══════════════════════════════════════════════════════════════
-//  SLIDE 13 – LE 4 POLICY
+//  SLIDE 13 – THE 4 POLICIES
 // ══════════════════════════════════════════════════════════════
 (function () {
   const s = pres.addSlide();
   lightSlide(s);
   addSectionChip(s, "Policy", C.green);
-  addTitle(s, "Le 4 politiche etiche — file JSON esterni");
+  addTitle(s, "The 4 Ethical Policies — External JSON Files");
   addRule(s);
   addPageNum(s, 13);
 
-  s.addText("Modificabili senza ricompilare · caricate all'avvio da policies/*.json", {
+  s.addText("Editable without recompiling · loaded at startup from policies/*.json", {
     x: 0.4, y: 1.38, w: 9.2, h: 0.28,
     fontSize: 10, italic: true, color: C.muted, fontFace: F.body, margin: 0,
   });
@@ -610,23 +610,23 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
   const policies = [
     {
       id: "P-DISCR-001", sev: "CRITICAL", sevColor: C.alert,
-      name: "Proxy discriminatori",
-      desc: "Vietati: ageRangeMin/Max, genderPreference, nationalityReq\nnelle offerte. Norma: D.Lgs. 198/2006, EU Dir. 2000/78/EC.",
+      name: "Discriminatory Proxies",
+      desc: "Forbidden: ageRangeMin/Max, genderPreference, nationalityReq\nin offers. Regulation: D.Lgs. 198/2006, EU Dir. 2000/78/EC.",
     },
     {
       id: "P-PROV-002", sev: "HIGH", sevColor: C.orange,
-      name: "Provenienza & qualità dati",
-      desc: "Solo fonti fidate (company-portal, synthetic).\nSe source = third-party-scraper / unknown → ESCALATE.",
+      name: "Provenance & Data Quality",
+      desc: "Only trusted sources (company-portal, synthetic).\nIf source = third-party-scraper / unknown → ESCALATE.",
     },
     {
       id: "P-ACC-003", sev: "MEDIUM", sevColor: C.amber,
-      name: "Accessibilità & disabilità",
-      desc: "Se il candidato ha disabilità, l'offerta deve essere\nflaggate disabilityFriendly. Altrimenti → REVISE.\nNorma: UN CRPD Art.27, L. 68/1999.",
+      name: "Accessibility & Disability",
+      desc: "If the candidate has a disability, the offer must be\nflagged disabilityFriendly. Otherwise → REVISE.\nRegulation: UN CRPD Art.27, L. 68/1999.",
     },
     {
       id: "P-TRANS-004", sev: "LOW", sevColor: "2C5FDC",
-      name: "Trasparenza & scopo",
-      desc: "requester e purpose devono essere dichiarati.\nSenza di essi la raccomandazione non è trasparente.\nNorma: GDPR Art.13/22.",
+      name: "Transparency & Purpose",
+      desc: "requester and purpose must be declared.\nWithout them the recommendation is not transparent.\nRegulation: GDPR Art.13/22.",
     },
   ];
 
@@ -657,7 +657,7 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
 
   // Request
   card(s, 0.4, 1.45, 4.3, 1.5, C.ice);
-  s.addText("Richiesta", { x: 0.55, y: 1.5, w: 3.9, h: 0.32, fontSize: 11, bold: true, color: C.navy, fontFace: F.title, margin: 0 });
+  s.addText("Request", { x: 0.55, y: 1.5, w: 3.9, h: 0.32, fontSize: 11, bold: true, color: C.navy, fontFace: F.title, margin: 0 });
   s.addText([
     { text: "candidateId: ", options: { color: C.muted } }, { text: "cand-001", options: { bold: true, color: C.text } }, { text: "  (Alice Bianchi)", options: { color: C.muted, breakLine: true } },
     { text: "jobId: ", options: { color: C.muted } },       { text: "job-001", options: { bold: true, color: C.text } },  { text: "  (Backend Java Dev)", options: { color: C.muted, breakLine: true } },
@@ -666,14 +666,14 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
 
   // Evaluation
   card(s, 0.4, 3.1, 4.3, 1.1, C.ice);
-  s.addText("Valutazione EaaS", { x: 0.55, y: 3.16, w: 3.9, h: 0.32, fontSize: 11, bold: true, color: C.navy, fontFace: F.title, margin: 0 });
-  s.addText("Nessuna policy violata — 4 policy valutate", { x: 0.55, y: 3.52, w: 4.0, h: 0.28, fontSize: 11, color: C.muted, fontFace: F.body, margin: 0 });
+  s.addText("EaaS Evaluation", { x: 0.55, y: 3.16, w: 3.9, h: 0.32, fontSize: 11, bold: true, color: C.navy, fontFace: F.title, margin: 0 });
+  s.addText("No policy violated — 4 policies evaluated", { x: 0.55, y: 3.52, w: 4.0, h: 0.28, fontSize: 11, color: C.muted, fontFace: F.body, margin: 0 });
   s.addText("Findings: 0", { x: 0.55, y: 3.82, w: 4.0, h: 0.28, fontSize: 11, color: C.green, bold: true, fontFace: F.body, margin: 0 });
 
   // Decision big badge
   card(s, 4.85, 1.45, 4.75, 3.0, "F0FFF4");
   s.addShape(pres.shapes.RECTANGLE, { x: 4.85, y: 1.45, w: 4.75, h: 0.42, fill: { color: C.green }, line: { color: C.green, width: 0 } });
-  s.addText("DECISIONE", { x: 4.85, y: 1.45, w: 4.75, h: 0.42, fontSize: 11, bold: true, color: C.white, align: "center", fontFace: F.body, margin: 0 });
+  s.addText("DECISION", { x: 4.85, y: 1.45, w: 4.75, h: 0.42, fontSize: 11, bold: true, color: C.white, align: "center", fontFace: F.body, margin: 0 });
   s.addText("PROCEED", { x: 4.85, y: 2.0, w: 4.75, h: 0.9, fontSize: 46, bold: true, color: C.green, align: "center", fontFace: F.title, margin: 0 });
   s.addText("Risk: LOW", { x: 4.85, y: 2.85, w: 4.75, h: 0.35, fontSize: 14, color: C.green, align: "center", bold: true, fontFace: F.body, margin: 0 });
   s.addText('"No policy was triggered: the recommendation\nis consistent with the active ethical policies."', {
@@ -685,7 +685,7 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
     x: 0.4, y: 4.3, w: 9.2, h: 0.3,
     fontSize: 10, color: C.muted, fontFace: F.body, margin: 0,
   });
-  s.addText("Required actions: nessuna  ·  L'offerta può essere mostrata al candidato", {
+  s.addText("Required actions: none  ·  The offer can be shown to the candidate", {
     x: 0.4, y: 4.65, w: 9.2, h: 0.3,
     fontSize: 11, bold: true, color: C.green, fontFace: F.body, margin: 0,
   });
@@ -703,9 +703,9 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
   addPageNum(s, 15);
 
   card(s, 0.4, 1.45, 4.3, 1.5, C.ice);
-  s.addText("Richiesta", { x: 0.55, y: 1.5, w: 3.9, h: 0.32, fontSize: 11, bold: true, color: C.navy, fontFace: F.title, margin: 0 });
+  s.addText("Request", { x: 0.55, y: 1.5, w: 3.9, h: 0.32, fontSize: 11, bold: true, color: C.navy, fontFace: F.title, margin: 0 });
   s.addText([
-    { text: "candidateId: ", options: { color: C.muted } }, { text: "cand-001", options: { bold: true, color: C.text } }, { text: "  (Alice Bianchi, 28 anni)", options: { color: C.muted, breakLine: true } },
+    { text: "candidateId: ", options: { color: C.muted } }, { text: "cand-001", options: { bold: true, color: C.text } }, { text: "  (Alice Bianchi, 28 years old)", options: { color: C.muted, breakLine: true } },
     { text: "jobId: ", options: { color: C.muted } },       { text: "job-003", options: { bold: true, color: C.text } },  { text: "  (Junior Frontend Dev)", options: { color: C.muted, breakLine: true } },
     { text: "source: ", options: { color: C.muted } },      { text: "third-party-scraper", options: { bold: true, color: C.alert } },
   ], { x: 0.55, y: 1.88, w: 4.0, h: 1.0, fontSize: 11, fontFace: F.body, margin: 0 });
@@ -713,7 +713,7 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
   // Findings
   const findings = [
     { id: "P-DISCR-001", sev: "CRITICAL", color: C.alert, evidence: 'Offer carries "ageRangeMax" = 30' },
-    { id: "P-PROV-002", sev: "HIGH",     color: C.orange, evidence: 'Source "third-party-scraper" non trusted' },
+    { id: "P-PROV-002", sev: "HIGH",     color: C.orange, evidence: 'Source "third-party-scraper" not trusted' },
   ];
   findings.forEach((f, i) => {
     const y = 3.1 + i * 1.0;
@@ -727,30 +727,30 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
   // Decision
   card(s, 4.85, 1.45, 4.75, 3.0, "FFF5F5");
   s.addShape(pres.shapes.RECTANGLE, { x: 4.85, y: 1.45, w: 4.75, h: 0.42, fill: { color: C.alert }, line: { color: C.alert, width: 0 } });
-  s.addText("DECISIONE", { x: 4.85, y: 1.45, w: 4.75, h: 0.42, fontSize: 11, bold: true, color: C.white, align: "center", fontFace: F.body, margin: 0 });
+  s.addText("DECISION", { x: 4.85, y: 1.45, w: 4.75, h: 0.42, fontSize: 11, bold: true, color: C.white, align: "center", fontFace: F.body, margin: 0 });
   s.addText("REJECT", { x: 4.85, y: 1.95, w: 4.75, h: 0.9, fontSize: 48, bold: true, color: C.alert, align: "center", fontFace: F.title, margin: 0 });
   s.addText("Risk: CRITICAL", { x: 4.85, y: 2.85, w: 4.75, h: 0.35, fontSize: 14, color: C.alert, align: "center", bold: true, fontFace: F.body, margin: 0 });
   s.addText("Required actions:", { x: 4.95, y: 3.3, w: 4.55, h: 0.28, fontSize: 10, bold: true, color: C.navy, fontFace: F.body, margin: 0 });
   s.addText([
-    { text: "Nascondere l'offerta dalle raccomandazioni", options: { bullet: true, breakLine: true } },
-    { text: "Notificare il responsabile del campo discriminatorio", options: { bullet: true, breakLine: true } },
-    { text: "Escalate al compliance officer", options: { bullet: true } },
+    { text: "Hide the offer from recommendations", options: { bullet: true, breakLine: true } },
+    { text: "Notify the responsible for the discriminatory field", options: { bullet: true, breakLine: true } },
+    { text: "Escalate to compliance officer", options: { bullet: true } },
   ], { x: 4.95, y: 3.6, w: 4.55, h: 0.8, fontSize: 10, color: C.text, fontFace: F.body, margin: 0 });
 })();
 
 // ══════════════════════════════════════════════════════════════
-//  SLIDE 16 – SEZIONE 3 divider
+//  SLIDE 16 – SECTION 3 divider
 // ══════════════════════════════════════════════════════════════
 (function () {
   const s = pres.addSlide();
   darkSlide(s);
   s.addShape(pres.shapes.RECTANGLE, { x: 0, y: 0, w: 0.22, h: 5.625, fill: { color: "9B59B6" }, line: { color: "9B59B6", width: 0 } });
-  s.addText("Sezione 3", { x: 0.5, y: 1.3, w: 9, h: 0.45, fontSize: 13, color: "9FB4CC", fontFace: F.body, italic: true, margin: 0 });
-  s.addText("Audit, Integrazione\ne Riflessione", {
+  s.addText("Section 3", { x: 0.5, y: 1.3, w: 9, h: 0.45, fontSize: 13, color: "9FB4CC", fontFace: F.body, italic: true, margin: 0 });
+  s.addText("Audit, Integration\nand Reflection", {
     x: 0.5, y: 1.75, w: 9, h: 2.0,
     fontSize: 40, bold: true, color: C.white, fontFace: F.title, margin: 0,
   });
-  s.addText("Membro 3  ·  ~10-12 minuti", {
+  s.addText("Member 3  ·  ~10-12 minutes", {
     x: 0.5, y: 4.5, w: 9, h: 0.4,
     fontSize: 12, color: "9FB4CC", fontFace: F.body, margin: 0,
   });
@@ -763,7 +763,7 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
   const s = pres.addSlide();
   lightSlide(s);
   addSectionChip(s, "Audit Trail", "9B59B6");
-  addTitle(s, "Audit Trail & Provenienza");
+  addTitle(s, "Audit Trail & Provenance");
   addRule(s);
   addPageNum(s, 17);
 
@@ -790,45 +790,45 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
 
   // annotations
   const ann = [
-    { y: 1.55, t: "UUID univoco per ogni valutazione", c: "9B59B6" },
-    { y: 2.0,  t: "Timestamp ISO 8601", c: "9B59B6" },
-    { y: 2.35, t: "Richiesta originale (snapshot)", c: C.blue },
-    { y: 2.7,  t: "Dati reali scaricati dal DaaS\n→ provenienza tracciata", c: C.blue },
-    { y: 3.55, t: "Decisione finale", c: C.alert },
-    { y: 4.15, t: "Tutte le policy valutate\n(anche quelle non violate)", c: C.green },
+    { y: 1.55, t: "Unique UUID per evaluation",           c: "9B59B6" },
+    { y: 2.0,  t: "Timestamp ISO 8601",                   c: "9B59B6" },
+    { y: 2.35, t: "Original request (snapshot)",          c: C.blue },
+    { y: 2.7,  t: "Real data fetched from DaaS\n→ provenance tracked", c: C.blue },
+    { y: 3.55, t: "Final decision",                       c: C.alert },
+    { y: 4.15, t: "All policies evaluated\n(including those not violated)", c: C.green },
   ];
   ann.forEach(a => {
     s.addShape(pres.shapes.LINE, { x: 5.9, y: a.y + 0.05, w: 0.5, h: 0, line: { color: a.c, width: 1, dashType: "dash" } });
     s.addText(a.t, { x: 6.5, y: a.y, w: 3.1, h: 0.5, fontSize: 10, color: a.c, fontFace: F.body, margin: 0 });
   });
 
-  s.addText("Persistenza: in-memory (sessione) + JSONL append-only su disco", {
+  s.addText("Persistence: in-memory (session) + append-only JSONL on disk", {
     x: 0.4, y: 5.2, w: 9.2, h: 0.3,
     fontSize: 10, color: C.muted, italic: true, fontFace: F.body, margin: 0,
   });
 })();
 
 // ══════════════════════════════════════════════════════════════
-//  SLIDE 18 – INTEGRAZIONE DaaS ↔ EaaS
+//  SLIDE 18 – DaaS ↔ EaaS INTEGRATION FLOW
 // ══════════════════════════════════════════════════════════════
 (function () {
   const s = pres.addSlide();
   lightSlide(s);
-  addSectionChip(s, "Integrazione", "9B59B6");
-  addTitle(s, "Flusso completo DaaS ↔ EaaS");
+  addSectionChip(s, "Integration", "9B59B6");
+  addTitle(s, "Full DaaS ↔ EaaS Flow");
   addRule(s);
   addPageNum(s, 18);
 
   const flow = [
-    { actor: "UTENTE", desc: "Seleziona candidato nel browser", color: "9B59B6" },
-    { actor: "CLIENT", desc: "GET /api/match/candidate/{id} → DaaS", color: C.blue },
-    { actor: "DaaS",   desc: "SPARQL multi-condizione → lista di MatchDTO", color: C.blue },
-    { actor: "CLIENT", desc: "Mostra lista · Utente clicca 'Evalua'", color: C.blue },
-    { actor: "CLIENT", desc: "POST /api/ethics/evaluate → EaaS", color: "9B59B6" },
-    { actor: "EaaS",   desc: "GET /api/candidates/{id} + /api/jobs/{id} → DaaS", color: C.green },
-    { actor: "EaaS",   desc: "PolicyEngine + DecisionMaker → EvaluationResponse", color: C.green },
-    { actor: "EaaS",   desc: "AuditService.save() → JSONL", color: C.green },
-    { actor: "CLIENT", desc: "Visualizza: decisione, findings, audit link", color: "9B59B6" },
+    { actor: "USER",   desc: "Selects candidate in browser",                              color: "9B59B6" },
+    { actor: "CLIENT", desc: "GET /api/match/candidate/{id} → DaaS",                color: C.blue },
+    { actor: "DaaS",   desc: "Multi-condition SPARQL → list of MatchDTOs",           color: C.blue },
+    { actor: "CLIENT", desc: "Shows list · User clicks 'Evaluate'",                 color: C.blue },
+    { actor: "CLIENT", desc: "POST /api/ethics/evaluate → EaaS",                    color: "9B59B6" },
+    { actor: "EaaS",   desc: "GET /api/candidates/{id} + /api/jobs/{id} → DaaS",    color: C.green },
+    { actor: "EaaS",   desc: "PolicyEngine + DecisionMaker → EvaluationResponse",   color: C.green },
+    { actor: "EaaS",   desc: "AuditService.save() → JSONL",                         color: C.green },
+    { actor: "CLIENT", desc: "Displays: decision, findings, audit link",                 color: "9B59B6" },
   ];
 
   flow.forEach((f, i) => {
@@ -859,12 +859,12 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
   });
 
   const steps = [
-    "1  Avvia DaaS (:8081) · EaaS (:8082) · Client (:8080)",
-    "2  Seleziona cand-001 (Alice Bianchi) → vedi match",
-    "3  Evalua job-001 → PROCEED",
-    "4  Evalua job-003 → REJECT  (ageRangeMax + scraper)",
-    "5  Apri /audit → verifica JSONL on disk",
-    "6  Modifica una policy JSON → riavvia EaaS → rivedi",
+    "1  Start DaaS (:8081) · EaaS (:8082) · Client (:8080)",
+    "2  Select cand-001 (Alice Bianchi) → view matches",
+    "3  Evaluate job-001 → PROCEED",
+    "4  Evaluate job-003 → REJECT  (ageRangeMax + scraper)",
+    "5  Open /audit → verify JSONL on disk",
+    "6  Edit a JSON policy → restart EaaS → review",
   ];
   s.addText(steps.join("\n"), {
     x: 0.5, y: 2.85, w: 9, h: 2.5,
@@ -874,21 +874,21 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
 })();
 
 // ══════════════════════════════════════════════════════════════
-//  SLIDE 20 – RIFLESSIONE CRITICA
+//  SLIDE 20 – CRITICAL REFLECTION
 // ══════════════════════════════════════════════════════════════
 (function () {
   const s = pres.addSlide();
   lightSlide(s);
-  addSectionChip(s, "Riflessione critica", C.alert);
-  addTitle(s, "Limiti del sistema");
+  addSectionChip(s, "Critical Reflection", C.alert);
+  addTitle(s, "System Limitations");
   addRule(s);
   addPageNum(s, 20);
 
   const limits = [
-    { t: "Proxy indiretti non rilevati", d: "Il sistema controlla campi espliciti (età, genere, nazionalità). Proxy sottili come CAP, università di laurea o nome non vengono intercettati.", color: C.alert },
-    { t: "Dataset sintetico", d: "I dati sono generati artificialmente. In produzione servirebbe gestione del consenso GDPR, cifratura, e diritto alla spiegazione.", color: C.orange },
-    { t: "Policy scritte in Java", d: "Le regole in JSON dichiarano severity e parametri, ma la logica è codice Java. Modificare il comportamento richiede un developer.", color: C.amber },
-    { t: "Nessuna metrica di fairness aggregata", d: "Si controlla ogni singola offerta, ma non si misurano disparità sistematiche tra gruppi di candidati nel tempo.", color: C.amber },
+    { t: "Indirect proxies not detected",   d: "The system checks explicit fields (age, gender, nationality). Subtle proxies like postcode, university, or name are not intercepted.", color: C.alert },
+    { t: "Synthetic dataset",               d: "Data is artificially generated. In production, GDPR consent management, encryption, and right-to-explanation flows would be required.", color: C.orange },
+    { t: "Policies written in Java",        d: "JSON rules declare severity and parameters, but the logic is Java code. Changing behavior requires a developer.", color: C.amber },
+    { t: "No aggregate fairness metrics",   d: "Each offer is checked individually, but no systematic disparities across candidate groups are measured over time.", color: C.amber },
   ];
 
   limits.forEach((l, i) => {
@@ -904,21 +904,21 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
 })();
 
 // ══════════════════════════════════════════════════════════════
-//  SLIDE 21 – COSA NON AUTOMATIZZARE
+//  SLIDE 21 – WHAT NOT TO AUTOMATE
 // ══════════════════════════════════════════════════════════════
 (function () {
   const s = pres.addSlide();
   lightSlide(s);
-  addSectionChip(s, "Riflessione critica", C.alert);
-  addTitle(s, "Cosa NON dovrebbe essere deciso automaticamente");
+  addSectionChip(s, "Critical Reflection", C.alert);
+  addTitle(s, "What Should NOT Be Decided Automatically");
   addRule(s);
   addPageNum(s, 21);
 
   const items = [
-    { icon: "✗", t: "La selezione finale del candidato", d: "Il sistema raccomanda e valuta eticamente, ma la decisione di assunzione deve sempre essere umana." },
-    { icon: "✗", t: "L'esclusione permanente di un'offerta", d: "REJECT blocca la raccomandazione, non l'offerta dal sistema. Serve revisione umana prima di rimuoverla definitivamente." },
-    { icon: "✗", t: "Interpretare contesti giuridici complessi", d: "Una nationalityReq può essere legale (es. requisiti di sicurezza nazionale). L'EaaS non ha contesto: ESCALATE → umano." },
-    { icon: "✗", t: "Valutare capacità e soft skills", d: "Il dataset ha anni di esperienza e skill tecniche. La motivazione, la comunicazione, la cultura aziendale restano fuori." },
+    { icon: "✗", t: "Final candidate selection",         d: "The system recommends and evaluates ethically, but the hiring decision must always be made by a human." },
+    { icon: "✗", t: "Permanent exclusion of an offer",   d: "REJECT blocks the recommendation, not the offer from the system. Human review is required before permanently removing it." },
+    { icon: "✗", t: "Interpreting complex legal contexts",d: "A nationalityReq may be legal (e.g. national security requirements). EaaS lacks context: ESCALATE → human." },
+    { icon: "✗", t: "Evaluating capabilities and soft skills", d: "The dataset captures years of experience and technical skills. Motivation, communication, and company culture remain outside the model." },
   ];
 
   items.forEach((it, i) => {
@@ -934,24 +934,24 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
 })();
 
 // ══════════════════════════════════════════════════════════════
-//  SLIDE 22 – CONCLUSIONI / Q&A
+//  SLIDE 22 – CONCLUSIONS / Q&A
 // ══════════════════════════════════════════════════════════════
 (function () {
   const s = pres.addSlide();
   darkSlide(s);
   s.addShape(pres.shapes.RECTANGLE, { x: 0, y: 0, w: 0.22, h: 5.625, fill: { color: C.blue }, line: { color: C.blue, width: 0 } });
 
-  s.addText("Conclusioni", { x: 0.5, y: 0.5, w: 9, h: 0.5, fontSize: 14, color: "9FB4CC", fontFace: F.body, italic: true, margin: 0 });
+  s.addText("Conclusions", { x: 0.5, y: 0.5, w: 9, h: 0.5, fontSize: 14, color: "9FB4CC", fontFace: F.body, italic: true, margin: 0 });
   s.addText([
-    { text: "Dati + Etica + Architettura", options: { bold: true, breakLine: true } },
-    { text: "come sistema unico", options: {} },
+    { text: "Data + Ethics + Architecture", options: { bold: true, breakLine: true } },
+    { text: "as a unified system", options: {} },
   ], { x: 0.5, y: 0.95, w: 9, h: 1.4, fontSize: 36, color: C.white, fontFace: F.title, margin: 0 });
 
   const points = [
-    { t: "DaaS", d: "635 triple RDF/XML · 8 endpoint REST · SPARQL multi-condizione", color: C.blue },
-    { t: "EaaS", d: "4 policy esterne JSON · PROCEED / REVISE / ESCALATE / REJECT", color: C.green },
-    { t: "Audit", d: "Ogni decisione è tracciata, giustificata e persistita su disco", color: "9B59B6" },
-    { t: "Etica", d: "Non un checkbox finale: è parte integrante dell'architettura", color: C.amber },
+    { t: "DaaS",   d: "635 RDF/XML triples · 8 REST endpoints · multi-condition SPARQL",       color: C.blue },
+    { t: "EaaS",   d: "4 external JSON policies · PROCEED / REVISE / ESCALATE / REJECT",           color: C.green },
+    { t: "Audit",  d: "Every decision is tracked, justified, and persisted to disk",                     color: "9B59B6" },
+    { t: "Ethics", d: "Not a final checkbox: ethics is an integral part of the architecture",            color: C.amber },
   ];
   points.forEach((p, i) => {
     const y = 2.5 + i * 0.66;
@@ -961,7 +961,7 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
   });
 
   s.addShape(pres.shapes.LINE, { x: 0.5, y: 5.1, w: 4.0, h: 0, line: { color: C.blue, width: 1 } });
-  s.addText("Domande?", { x: 0.5, y: 5.15, w: 9, h: 0.3, fontSize: 12, color: "9FB4CC", fontFace: F.body, italic: true, margin: 0 });
+  s.addText("Questions?", { x: 0.5, y: 5.15, w: 9, h: 0.3, fontSize: 12, color: "9FB4CC", fontFace: F.body, italic: true, margin: 0 });
 })();
 
 // ─── WRITE FILE ───
