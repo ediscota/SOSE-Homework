@@ -281,7 +281,7 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
   // Three service boxes
   const services = [
     { label: "CLIENT", port: ":8080", tech: "Spring Boot\nThymeleaf", color: "9B59B6", desc: "Web UI: candidate browsing, recommendations, evaluation" },
-    { label: "DaaS", port: ":8081", tech: "Spring Boot\nApache Jena 5.1\nRDF/XML + SPARQL", color: C.blue, desc: "RDF dataset, SPARQL queries, 8 REST JSON endpoints" },
+    { label: "DaaS", port: ":8081", tech: "Spring Boot\nApache Jena 5.1\nRDF/XML + SPARQL", color: C.blue, desc: "7 REST controllers · full CRUD\nSPARQL matching\nSwagger UI: /swagger-ui.html" },
     { label: "EaaS", port: ":8082", tech: "Spring Boot\nPolicy engine\nAudit JSONL", color: C.green, desc: "Loads JSON policies, evaluates requests, produces decisions and audit" },
   ];
 
@@ -464,40 +464,86 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
 })();
 
 // ══════════════════════════════════════════════════════════════
-//  SLIDE 9 – DaaS ENDPOINTS
+//  SLIDE 9 – DaaS ENDPOINTS (full CRUD)
 // ══════════════════════════════════════════════════════════════
 (function () {
   const s = pres.addSlide();
   lightSlide(s);
   addSectionChip(s, "DaaS REST");
-  addTitle(s, "DaaS — REST Endpoints (base URL :8081)");
+  addTitle(s, "DaaS — Full REST API  (base: http://localhost:8081)");
   addRule(s);
   addPageNum(s, 9);
 
-  const endpoints = [
-    ["GET", "/api/candidates",           "List all candidates"],
-    ["GET", "/api/candidates/{id}",       "Single candidate by ID"],
-    ["GET", "/api/jobs",                  "Search offers (sector, location, minSalary, remote) — multi-condition SPARQL"],
-    ["GET", "/api/jobs/{id}",             "Single offer by ID"],
-    ["GET", "/api/jobs/sector/{sector}",  "Offers by sector"],
-    ["GET", "/api/jobs/location/{loc}",   "Offers by city"],
-    ["GET", "/api/jobs/risky",            "Offers with discriminatory proxies or unverified provenance"],
-    ["GET", "/api/match/candidate/{id}",  "Recommendations for candidate (skill + location + experience)"],
+  // Method-badge helper — returns the next x position
+  const MC = { GET: "0D9488", POST: "2C5FDC", PUT: "C25A00", DELETE: "B32424" };
+  function mb(x, y, method, label, w) {
+    const col = MC[method] || C.muted;
+    s.addShape(pres.shapes.ROUNDED_RECTANGLE, {
+      x, y, w, h: 0.22, fill: { color: col }, rectRadius: 0.03, line: { color: col, width: 0 },
+    });
+    s.addText(label, {
+      x, y, w, h: 0.22, fontSize: 7.5, bold: true, color: C.white,
+      align: "center", fontFace: F.body, margin: 0,
+    });
+    return x + w + 0.055;
+  }
+
+  const CRUD = [
+    { m: "GET",    l: "GET",        w: 0.44 },
+    { m: "GET",    l: "GET /{id}",  w: 0.72 },
+    { m: "POST",   l: "POST",       w: 0.50 },
+    { m: "PUT",    l: "PUT /{id}",  w: 0.72 },
+    { m: "DELETE", l: "DELETE/{id}",w: 0.82 },
   ];
 
-  endpoints.forEach((e, i) => {
-    const y = 1.45 + i * 0.5;
+  const resources = [
+    { path: "/api/candidates", desc: "job-seeker candidates", methods: CRUD },
+    { path: "/api/jobs",       desc: "?sector &location &minSalary &remote  ·  +GET /risky",
+      methods: [
+        { m: "GET", l: "GET*",       w: 0.48 },
+        { m: "GET", l: "GET /{id}",  w: 0.72 },
+        { m: "GET", l: "GET /risky", w: 0.80 },
+        { m: "POST",   l: "POST",       w: 0.50 },
+        { m: "PUT",    l: "PUT /{id}",  w: 0.72 },
+        { m: "DELETE", l: "DELETE/{id}",w: 0.82 },
+      ],
+    },
+    { path: "/api/match",     desc: "SPARQL recommendations  —  read-only",
+      methods: [{ m: "GET", l: "GET /candidate/{id}", w: 1.45 }] },
+    { path: "/api/companies", desc: "hiring companies",      methods: CRUD },
+    { path: "/api/skills",    desc: "skill catalogue",       methods: CRUD },
+    { path: "/api/sectors",   desc: "work sectors",          methods: CRUD },
+    { path: "/api/locations", desc: "geographic locations",  methods: CRUD },
+  ];
+
+  const rowH = 0.44, startY = 1.46, pathW = 2.38, methX = 2.85;
+
+  resources.forEach((r, i) => {
+    const y = startY + i * rowH;
     const bg = i % 2 === 0 ? C.ice : C.white;
-    s.addShape(pres.shapes.RECTANGLE, { x: 0.4, y, w: 9.2, h: 0.46, fill: { color: bg }, line: { color: "D4DCF0", width: 1 } });
-    // badge GET
-    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 0.5, y: y + 0.08, w: 0.55, h: 0.28, fill: { color: "0D9488" }, rectRadius: 0.04, line: { color: "0D9488", width: 0 } });
-    s.addText("GET", { x: 0.5, y: y + 0.08, w: 0.55, h: 0.28, fontSize: 9, bold: true, color: C.white, align: "center", fontFace: F.body, margin: 0 });
-    s.addText(e[1], { x: 1.15, y: y + 0.04, w: 3.5, h: 0.38, fontSize: 10, color: C.blue, bold: true, fontFace: "Consolas", valign: "middle", margin: 0 });
-    s.addText(e[2], { x: 4.75, y: y + 0.04, w: 4.75, h: 0.38, fontSize: 10, color: C.text, fontFace: F.body, valign: "middle", margin: 0 });
-    if (i === 6) { // risky special
-      s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 4.75, y: y + 0.1, w: 0.5, h: 0.25, fill: { color: C.alert }, rectRadius: 0.04, line: { color: C.alert, width: 0 } });
-      s.addText("⚠", { x: 4.75, y: y + 0.1, w: 0.5, h: 0.25, fontSize: 10, color: C.white, align: "center", fontFace: F.body, margin: 0 });
-    }
+    s.addShape(pres.shapes.RECTANGLE, { x: 0.4, y, w: 9.2, h: rowH, fill: { color: bg }, line: { color: "D4DCF0", width: 1 } });
+    s.addText(r.path, {
+      x: 0.50, y: y + 0.03, w: pathW - 0.12, h: 0.24,
+      fontSize: 10, bold: true, color: C.blue, fontFace: "Consolas", margin: 0,
+    });
+    s.addText(r.desc, {
+      x: 0.50, y: y + 0.26, w: pathW - 0.12, h: 0.15,
+      fontSize: 7.5, color: C.muted, fontFace: F.body, italic: true, margin: 0,
+    });
+    let bx = methX;
+    const by = y + (rowH - 0.22) / 2;
+    r.methods.forEach(m => { bx = mb(bx, by, m.m, m.l, m.w); });
+  });
+
+  // Swagger footer
+  const swY = startY + 7 * rowH + 0.07;
+  s.addShape(pres.shapes.ROUNDED_RECTANGLE, {
+    x: 0.4, y: swY, w: 9.2, h: 0.3,
+    fill: { color: "EFF6FF" }, rectRadius: 0.05, line: { color: C.blue, width: 1 },
+  });
+  s.addText("📚  Swagger UI: http://localhost:8081/swagger-ui.html  —  interactive API documentation for all endpoints", {
+    x: 0.55, y: swY, w: 9.0, h: 0.3,
+    fontSize: 9.5, color: C.blue, fontFace: F.body, valign: "middle", margin: 0,
   });
 })();
 
@@ -860,16 +906,18 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
 
   const steps = [
     "1  Start DaaS (:8081) · EaaS (:8082) · Client (:8080)",
-    "2  Select cand-001 (Alice Bianchi) → view matches",
-    "3  Evaluate job-001 → PROCEED",
-    "4  Evaluate job-003 → REJECT  (ageRangeMax + scraper)",
-    "5  Open /audit → verify JSONL on disk",
-    "6  Edit a JSON policy → restart EaaS → review",
+    "2  Browse Swagger UI → localhost:8081/swagger-ui.html  (explore all CRUD endpoints)",
+    "3  Create a new candidate via the web form (CRUD in action)",
+    "4  Select cand-001 (Alice Bianchi) → view match recommendations",
+    "5  Evaluate job-001 → PROCEED",
+    "6  Evaluate job-003 → REJECT  (ageRangeMax + third-party-scraper)",
+    "7  Open /api/audit → verify AuditRecord · check JSONL on disk",
+    "8  Edit a JSON policy file → restart EaaS → rerun evaluation",
   ];
   s.addText(steps.join("\n"), {
-    x: 0.5, y: 2.85, w: 9, h: 2.5,
-    fontSize: 13, color: "CADCFC", fontFace: F.body, valign: "top", margin: 0,
-    lineSpacingMultiple: 1.5,
+    x: 0.5, y: 2.82, w: 9.1, h: 2.65,
+    fontSize: 12, color: "CADCFC", fontFace: F.body, valign: "top", margin: 0,
+    lineSpacingMultiple: 1.35,
   });
 })();
 
@@ -948,7 +996,7 @@ function badge(slide, x, y, w, text, fillColor, textColor) {
   ], { x: 0.5, y: 0.95, w: 9, h: 1.4, fontSize: 36, color: C.white, fontFace: F.title, margin: 0 });
 
   const points = [
-    { t: "DaaS",   d: "635 RDF/XML triples · 8 REST endpoints · multi-condition SPARQL",       color: C.blue },
+    { t: "DaaS",   d: "635 RDF/XML triples · 7 controllers · full CRUD · Swagger UI",           color: C.blue },
     { t: "EaaS",   d: "4 external JSON policies · PROCEED / REVISE / ESCALATE / REJECT",           color: C.green },
     { t: "Audit",  d: "Every decision is tracked, justified, and persisted to disk",                     color: "9B59B6" },
     { t: "Ethics", d: "Not a final checkbox: ethics is an integral part of the architecture",            color: C.amber },

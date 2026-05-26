@@ -41,7 +41,12 @@
       "Bash(mvn compile *)",
       "Bash(mvn -pl daas-service compile -q)",
       "Bash(mvn -pl client compile -q)",
-      "Bash(mvn clean *)"
+      "Bash(mvn clean *)",
+      "Bash(node slides/generate.js)",
+      "Bash(node generate.js)",
+      "Bash(python slides/scripts/office/soffice.py --headless --convert-to pdf slides/SoSE-Employment-DaaS-EaaS.pptx)",
+      "Bash(Get-Item \"C:\\\\Users\\\\edoar\\\\Documents\\\\GitHub\\\\SOSE-Homework\\\\slides\\\\SoSE-Employment-DaaS-EaaS.pptx\")",
+      "Bash(Select-Object Name, Length, LastWriteTime)"
     ]
   }
 }
