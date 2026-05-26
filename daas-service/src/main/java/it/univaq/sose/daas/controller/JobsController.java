@@ -74,7 +74,7 @@ public class JobsController {
             @Parameter(description = "Location label, e.g. Rome") @PathVariable String location) {
         return service.jobsByLocation(location);
     }
-
+/*
     @Operation(summary = "List potentially discriminatory job offers",
                description = "Returns job offers that carry at least one controversial proxy field "
                        + "(explicit age range, gender preference, or nationality requirement) "
@@ -84,6 +84,7 @@ public class JobsController {
     public List<JobOfferDTO> risky() {
         return service.riskyJobs();
     }
+    */
 
     @Operation(summary = "Create a new job offer",
                description = "Inserts a new job-offer individual into the RDF triplestore. "
