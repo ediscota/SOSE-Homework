@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Jobs')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main>
+    <div class="page-header">
+        <h2>Job Offers</h2>
+        <a class="btn" th:href="@{/jobs/new}">+ New Job</a>
+    </div>
+    <div class="card">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th><th>Title</th><th>Company</th><th>Sector</th>
+                <th>Location</th><th>Salary</th><th>Remote</th><th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="j : ${jobs}">
+                <td><code th:text="${j.id}">job-001</code></td>
+                <td th:text="${j.title}">Title</td>
+                <td th:text="${j.company}">Company</td>
+                <td th:text="${j.sector}">Sector</td>
+                <td th:text="${j.location}">Location</td>
+                <td th:text="${j.salary}">50000</td>
+                <td>
+                    <span th:if="${j.remote}" class="badge" style="background:#e8edf5">yes</span>
+                    <span th:unless="${j.remote}" class="muted">no</span>
+                </td>
+                <td class="table-actions">
+                    <a class="btn btn-sm btn-secondary" th:href="@{/jobs/__${j.id}__/edit}">Edit</a>
+                    <form th:action="@{/jobs/__${j.id}__/delete}" method="post" style="display:inline">
+                        <button class="btn btn-sm btn-danger" type="submit"
+                                onclick="return confirm('Delete this job offer?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

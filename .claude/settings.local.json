@@ -37,7 +37,11 @@
       "PowerShell(python -c \"from PIL import Image; print\\('PIL ok'\\)\" 2>&1)",
       "Bash(python check_slides.py)",
       "Bash(python extract_text.py)",
-      "Bash(python check_italian.py)"
+      "Bash(python check_italian.py)",
+      "Bash(mvn compile *)",
+      "Bash(mvn -pl daas-service compile -q)",
+      "Bash(mvn -pl client compile -q)",
+      "Bash(mvn clean *)"
     ]
   }
 }

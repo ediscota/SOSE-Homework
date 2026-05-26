@@ -1,10 +1,12 @@
 package it.univaq.sose.daas.controller;
 
 import it.univaq.sose.daas.model.JobOfferDTO;
+import it.univaq.sose.daas.model.JobOfferRequest;
 import it.univaq.sose.daas.service.EmploymentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -59,5 +61,27 @@ public class JobsController {
     @GetMapping("/risky")
     public List<JobOfferDTO> risky() {
         return service.riskyJobs();
+    }
+
+    @PostMapping
+    public ResponseEntity<JobOfferDTO> create(@RequestBody JobOfferRequest req) {
+        JobOfferDTO created = service.createJob(req);
+        return ResponseEntity.created(URI.create("/api/jobs/" + created.id())).body(created);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<JobOfferDTO> update(@PathVariable String id,
+                                              @RequestBody JobOfferRequest req) {
+        return service.updateJob(id, req)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        if (service.deleteJob(id)) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }

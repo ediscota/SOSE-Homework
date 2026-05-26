@@ -1,10 +1,10 @@
 package it.univaq.sose.daas.service;
 
-import it.univaq.sose.daas.model.CandidateDTO;
-import it.univaq.sose.daas.model.JobOfferDTO;
-import it.univaq.sose.daas.model.MatchDTO;
+import it.univaq.sose.daas.model.*;
 import org.apache.jena.query.*;
-import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.*;
+import org.apache.jena.vocabulary.RDF;
+import org.apache.jena.vocabulary.RDFS;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -27,6 +27,11 @@ public class EmploymentService {
             PREFIX schema: <http://schema.org/>
             PREFIX emp:    <http://sose.univaq.it/employment#>
             """;
+
+    private static final String EMP_NS    = "http://sose.univaq.it/employment#";
+    private static final String FOAF_NS   = "http://xmlns.com/foaf/0.1/";
+    private static final String DCT_NS    = "http://purl.org/dc/terms/";
+    private static final String SCHEMA_NS = "http://schema.org/";
 
     private final Dataset dataset;
 
@@ -307,5 +312,570 @@ public class EmploymentService {
     private static List<String> splitSkills(String concat) {
         if (concat == null || concat.isBlank()) return List.of();
         return Arrays.stream(concat.split(",")).map(String::trim).filter(s -> !s.isEmpty()).toList();
+    }
+
+    // =====================================================================
+    // Write helpers
+    // =====================================================================
+
+    private Model model() {
+        return dataset.getDefaultModel();
+    }
+
+    private Property p(String ns, String local) {
+        return model().createProperty(ns, local);
+    }
+
+    /**
+     * Generates a new URI id by scanning all existing resources of the given
+     * emp: type and finding the next free sequential number.
+     * prefix  – e.g. "cand", "job", "company"
+     * typeLocalName – e.g. "Candidate", "JobOffer", "Company"
+     */
+    private String generateId(String prefix, String typeLocalName) {
+        String q = PREFIXES + "SELECT ?r WHERE { ?r a emp:" + typeLocalName + " }";
+        int max = 0;
+        try (QueryExecution qe = QueryExecutionFactory.create(QueryFactory.create(q), dataset)) {
+            ResultSet rs = qe.execSelect();
+            while (rs.hasNext()) {
+                String ln = localName(rs.next().get("r"));
+                if (ln != null && ln.startsWith(prefix + "-")) {
+                    try {
+                        int n = Integer.parseInt(ln.substring(prefix.length() + 1));
+                        if (n > max) max = n;
+                    } catch (NumberFormatException ignored) {}
+                }
+            }
+        }
+        return String.format("%s-%03d", prefix, max + 1);
+    }
+
+    /**
+     * Finds the first resource of the given emp: type with rdfs:label = labelValue.
+     * Returns null if not found.
+     */
+    private Resource findByLabel(String typeLocalName, String labelValue) {
+        if (labelValue == null || labelValue.isBlank()) return null;
+        String q = PREFIXES + """
+                SELECT ?r WHERE {
+                  ?r a emp:%s ;
+                     rdfs:label ?lbl .
+                  FILTER(STR(?lbl) = "%s")
+                }
+                LIMIT 1
+                """.formatted(typeLocalName, labelValue.replace("\"", "\\\""));
+        try (QueryExecution qe = QueryExecutionFactory.create(QueryFactory.create(q), dataset)) {
+            ResultSet rs = qe.execSelect();
+            if (rs.hasNext()) {
+                RDFNode n = rs.next().get("r");
+                if (n != null && n.isURIResource()) return n.asResource();
+            }
+        }
+        return null;
+    }
+
+    private Resource findCompanyById(String id) {
+        if (id == null || id.isBlank()) return null;
+        String uri = EMP_NS + id;
+        Model m = model();
+        Resource r = m.getResource(uri);
+        return m.containsResource(r) ? r : null;
+    }
+
+    // =====================================================================
+    // Companies
+    // =====================================================================
+
+    public List<CompanyDTO> listCompanies() {
+        String q = PREFIXES + """
+                SELECT ?c ?name ?website WHERE {
+                  ?c a emp:Company ;
+                     schema:name ?name .
+                  OPTIONAL { ?c schema:url ?website }
+                }
+                ORDER BY ?c
+                """;
+        List<CompanyDTO> out = new ArrayList<>();
+        try (QueryExecution qe = QueryExecutionFactory.create(QueryFactory.create(q), dataset)) {
+            ResultSet rs = qe.execSelect();
+            while (rs.hasNext()) {
+                QuerySolution s = rs.next();
+                out.add(new CompanyDTO(localName(s.get("c")), str(s.get("name")), str(s.get("website"))));
+            }
+        }
+        return out;
+    }
+
+    public Optional<CompanyDTO> getCompany(String id) {
+        String q = PREFIXES + """
+                SELECT ?c ?name ?website WHERE {
+                  emp:%s a emp:Company ;
+                         schema:name ?name .
+                  OPTIONAL { emp:%s schema:url ?website }
+                  BIND(emp:%s AS ?c)
+                }
+                LIMIT 1
+                """.formatted(id, id, id);
+        try (QueryExecution qe = QueryExecutionFactory.create(QueryFactory.create(q), dataset)) {
+            ResultSet rs = qe.execSelect();
+            if (rs.hasNext()) {
+                QuerySolution s = rs.next();
+                return Optional.of(new CompanyDTO(id, str(s.get("name")), str(s.get("website"))));
+            }
+        }
+        return Optional.empty();
+    }
+
+    public CompanyDTO createCompany(CompanyRequest req) {
+        synchronized (dataset) {
+            String id = generateId("company", "Company");
+            Model m = model();
+            Resource r = m.createResource(EMP_NS + id);
+            r.addProperty(RDF.type, m.createResource(EMP_NS + "Company"));
+            r.addProperty(p(SCHEMA_NS, "name"), req.name());
+            if (req.website() != null && !req.website().isBlank())
+                r.addProperty(p(SCHEMA_NS, "url"), req.website());
+            return new CompanyDTO(id, req.name(), req.website());
+        }
+    }
+
+    public Optional<CompanyDTO> updateCompany(String id, CompanyRequest req) {
+        synchronized (dataset) {
+            Model m = model();
+            Resource r = m.getResource(EMP_NS + id);
+            if (!m.containsResource(r)) return Optional.empty();
+            m.removeAll(r, p(SCHEMA_NS, "name"), null);
+            m.removeAll(r, p(SCHEMA_NS, "url"), null);
+            r.addProperty(p(SCHEMA_NS, "name"), req.name());
+            if (req.website() != null && !req.website().isBlank())
+                r.addProperty(p(SCHEMA_NS, "url"), req.website());
+            return Optional.of(new CompanyDTO(id, req.name(), req.website()));
+        }
+    }
+
+    public boolean deleteCompany(String id) {
+        synchronized (dataset) {
+            Model m = model();
+            Resource r = m.getResource(EMP_NS + id);
+            if (!m.containsResource(r)) return false;
+            m.removeAll(r, null, null);
+            m.removeAll(null, null, r);
+            return true;
+        }
+    }
+
+    // =====================================================================
+    // Skills
+    // =====================================================================
+
+    public List<SkillDTO> listSkills() {
+        String q = PREFIXES + """
+                SELECT ?s ?lbl WHERE {
+                  ?s a emp:Skill ;
+                     rdfs:label ?lbl .
+                }
+                ORDER BY ?s
+                """;
+        List<SkillDTO> out = new ArrayList<>();
+        try (QueryExecution qe = QueryExecutionFactory.create(QueryFactory.create(q), dataset)) {
+            ResultSet rs = qe.execSelect();
+            while (rs.hasNext()) {
+                QuerySolution s = rs.next();
+                out.add(new SkillDTO(localName(s.get("s")), str(s.get("lbl"))));
+            }
+        }
+        return out;
+    }
+
+    public Optional<SkillDTO> getSkill(String id) {
+        String q = PREFIXES + """
+                SELECT ?lbl WHERE {
+                  emp:%s a emp:Skill ;
+                         rdfs:label ?lbl .
+                }
+                LIMIT 1
+                """.formatted(id);
+        try (QueryExecution qe = QueryExecutionFactory.create(QueryFactory.create(q), dataset)) {
+            ResultSet rs = qe.execSelect();
+            if (rs.hasNext())
+                return Optional.of(new SkillDTO(id, str(rs.next().get("lbl"))));
+        }
+        return Optional.empty();
+    }
+
+    public SkillDTO createSkill(SkillRequest req) {
+        synchronized (dataset) {
+            String id = generateId("skill", "Skill");
+            Model m = model();
+            Resource r = m.createResource(EMP_NS + id);
+            r.addProperty(RDF.type, m.createResource(EMP_NS + "Skill"));
+            r.addProperty(RDFS.label, req.label());
+            return new SkillDTO(id, req.label());
+        }
+    }
+
+    public Optional<SkillDTO> updateSkill(String id, SkillRequest req) {
+        synchronized (dataset) {
+            Model m = model();
+            Resource r = m.getResource(EMP_NS + id);
+            if (!m.containsResource(r)) return Optional.empty();
+            m.removeAll(r, RDFS.label, null);
+            r.addProperty(RDFS.label, req.label());
+            return Optional.of(new SkillDTO(id, req.label()));
+        }
+    }
+
+    public boolean deleteSkill(String id) {
+        synchronized (dataset) {
+            Model m = model();
+            Resource r = m.getResource(EMP_NS + id);
+            if (!m.containsResource(r)) return false;
+            m.removeAll(r, null, null);
+            m.removeAll(null, null, r);
+            return true;
+        }
+    }
+
+    // =====================================================================
+    // Sectors
+    // =====================================================================
+
+    public List<SectorDTO> listSectors() {
+        String q = PREFIXES + """
+                SELECT ?s ?lbl WHERE {
+                  ?s a emp:Sector ;
+                     rdfs:label ?lbl .
+                }
+                ORDER BY ?s
+                """;
+        List<SectorDTO> out = new ArrayList<>();
+        try (QueryExecution qe = QueryExecutionFactory.create(QueryFactory.create(q), dataset)) {
+            ResultSet rs = qe.execSelect();
+            while (rs.hasNext()) {
+                QuerySolution s = rs.next();
+                out.add(new SectorDTO(localName(s.get("s")), str(s.get("lbl"))));
+            }
+        }
+        return out;
+    }
+
+    public Optional<SectorDTO> getSector(String id) {
+        String q = PREFIXES + """
+                SELECT ?lbl WHERE {
+                  emp:%s a emp:Sector ;
+                         rdfs:label ?lbl .
+                }
+                LIMIT 1
+                """.formatted(id);
+        try (QueryExecution qe = QueryExecutionFactory.create(QueryFactory.create(q), dataset)) {
+            ResultSet rs = qe.execSelect();
+            if (rs.hasNext())
+                return Optional.of(new SectorDTO(id, str(rs.next().get("lbl"))));
+        }
+        return Optional.empty();
+    }
+
+    public SectorDTO createSector(SectorRequest req) {
+        synchronized (dataset) {
+            String id = generateId("sector", "Sector");
+            Model m = model();
+            Resource r = m.createResource(EMP_NS + id);
+            r.addProperty(RDF.type, m.createResource(EMP_NS + "Sector"));
+            r.addProperty(RDFS.label, req.label());
+            return new SectorDTO(id, req.label());
+        }
+    }
+
+    public Optional<SectorDTO> updateSector(String id, SectorRequest req) {
+        synchronized (dataset) {
+            Model m = model();
+            Resource r = m.getResource(EMP_NS + id);
+            if (!m.containsResource(r)) return Optional.empty();
+            m.removeAll(r, RDFS.label, null);
+            r.addProperty(RDFS.label, req.label());
+            return Optional.of(new SectorDTO(id, req.label()));
+        }
+    }
+
+    public boolean deleteSector(String id) {
+        synchronized (dataset) {
+            Model m = model();
+            Resource r = m.getResource(EMP_NS + id);
+            if (!m.containsResource(r)) return false;
+            m.removeAll(r, null, null);
+            m.removeAll(null, null, r);
+            return true;
+        }
+    }
+
+    // =====================================================================
+    // Locations
+    // =====================================================================
+
+    public List<LocationDTO> listLocations() {
+        String q = PREFIXES + """
+                SELECT ?l ?lbl WHERE {
+                  ?l a emp:Location ;
+                     rdfs:label ?lbl .
+                }
+                ORDER BY ?l
+                """;
+        List<LocationDTO> out = new ArrayList<>();
+        try (QueryExecution qe = QueryExecutionFactory.create(QueryFactory.create(q), dataset)) {
+            ResultSet rs = qe.execSelect();
+            while (rs.hasNext()) {
+                QuerySolution s = rs.next();
+                out.add(new LocationDTO(localName(s.get("l")), str(s.get("lbl"))));
+            }
+        }
+        return out;
+    }
+
+    public Optional<LocationDTO> getLocation(String id) {
+        String q = PREFIXES + """
+                SELECT ?lbl WHERE {
+                  emp:%s a emp:Location ;
+                         rdfs:label ?lbl .
+                }
+                LIMIT 1
+                """.formatted(id);
+        try (QueryExecution qe = QueryExecutionFactory.create(QueryFactory.create(q), dataset)) {
+            ResultSet rs = qe.execSelect();
+            if (rs.hasNext())
+                return Optional.of(new LocationDTO(id, str(rs.next().get("lbl"))));
+        }
+        return Optional.empty();
+    }
+
+    public LocationDTO createLocation(LocationRequest req) {
+        synchronized (dataset) {
+            String id = generateId("loc", "Location");
+            Model m = model();
+            Resource r = m.createResource(EMP_NS + id);
+            r.addProperty(RDF.type, m.createResource(EMP_NS + "Location"));
+            r.addProperty(RDFS.label, req.label());
+            return new LocationDTO(id, req.label());
+        }
+    }
+
+    public Optional<LocationDTO> updateLocation(String id, LocationRequest req) {
+        synchronized (dataset) {
+            Model m = model();
+            Resource r = m.getResource(EMP_NS + id);
+            if (!m.containsResource(r)) return Optional.empty();
+            m.removeAll(r, RDFS.label, null);
+            r.addProperty(RDFS.label, req.label());
+            return Optional.of(new LocationDTO(id, req.label()));
+        }
+    }
+
+    public boolean deleteLocation(String id) {
+        synchronized (dataset) {
+            Model m = model();
+            Resource r = m.getResource(EMP_NS + id);
+            if (!m.containsResource(r)) return false;
+            m.removeAll(r, null, null);
+            m.removeAll(null, null, r);
+            return true;
+        }
+    }
+
+    // =====================================================================
+    // Candidates – write
+    // =====================================================================
+
+    private void applyCandidateProps(Model m, Resource r, CandidateRequest req) {
+        // Remove old values for all mutable properties
+        m.removeAll(r, p(FOAF_NS, "name"), null);
+        m.removeAll(r, p(FOAF_NS, "gender"), null);
+        m.removeAll(r, p(FOAF_NS, "age"), null);
+        m.removeAll(r, p(SCHEMA_NS, "nationality"), null);
+        m.removeAll(r, p(EMP_NS, "hasDisability"), null);
+        m.removeAll(r, p(EMP_NS, "hasLocation"), null);
+        m.removeAll(r, p(EMP_NS, "yearsOfExperience"), null);
+        m.removeAll(r, p(EMP_NS, "minSalary"), null);
+        m.removeAll(r, p(DCT_NS, "source"), null);
+        m.removeAll(r, p(EMP_NS, "hasSkill"), null);
+
+        if (req.name() != null)              r.addProperty(p(FOAF_NS, "name"), req.name());
+        if (req.gender() != null)            r.addProperty(p(FOAF_NS, "gender"), req.gender());
+        if (req.age() != null)               r.addLiteral(p(FOAF_NS, "age"), m.createTypedLiteral(req.age()));
+        if (req.nationality() != null)       r.addProperty(p(SCHEMA_NS, "nationality"), req.nationality());
+        if (req.hasDisability() != null)     r.addLiteral(p(EMP_NS, "hasDisability"), m.createTypedLiteral(req.hasDisability()));
+        if (req.yearsOfExperience() != null) r.addLiteral(p(EMP_NS, "yearsOfExperience"), m.createTypedLiteral(req.yearsOfExperience()));
+        if (req.minSalary() != null)         r.addLiteral(p(EMP_NS, "minSalary"), m.createTypedLiteral(req.minSalary()));
+        if (req.source() != null)            r.addProperty(p(DCT_NS, "source"), req.source());
+
+        // location: find or create
+        if (req.location() != null && !req.location().isBlank()) {
+            Resource loc = findByLabel("Location", req.location());
+            if (loc == null) {
+                String locId = generateId("loc", "Location");
+                loc = m.createResource(EMP_NS + locId);
+                loc.addProperty(RDF.type, m.createResource(EMP_NS + "Location"));
+                loc.addProperty(RDFS.label, req.location());
+            }
+            r.addProperty(p(EMP_NS, "hasLocation"), loc);
+        }
+
+        // skills: find or create each
+        if (req.skills() != null) {
+            for (String skillLabel : req.skills()) {
+                if (skillLabel == null || skillLabel.isBlank()) continue;
+                Resource skill = findByLabel("Skill", skillLabel);
+                if (skill == null) {
+                    String sId = generateId("skill", "Skill");
+                    skill = m.createResource(EMP_NS + sId);
+                    skill.addProperty(RDF.type, m.createResource(EMP_NS + "Skill"));
+                    skill.addProperty(RDFS.label, skillLabel);
+                }
+                r.addProperty(p(EMP_NS, "hasSkill"), skill);
+            }
+        }
+    }
+
+    public CandidateDTO createCandidate(CandidateRequest req) {
+        synchronized (dataset) {
+            String id = generateId("cand", "Candidate");
+            Model m = model();
+            Resource r = m.createResource(EMP_NS + id);
+            r.addProperty(RDF.type, m.createResource(EMP_NS + "Candidate"));
+            applyCandidateProps(m, r, req);
+            return getCandidate(id).orElseThrow();
+        }
+    }
+
+    public Optional<CandidateDTO> updateCandidate(String id, CandidateRequest req) {
+        synchronized (dataset) {
+            Model m = model();
+            Resource r = m.getResource(EMP_NS + id);
+            if (!m.containsResource(r)) return Optional.empty();
+            applyCandidateProps(m, r, req);
+            return getCandidate(id);
+        }
+    }
+
+    public boolean deleteCandidate(String id) {
+        synchronized (dataset) {
+            Model m = model();
+            Resource r = m.getResource(EMP_NS + id);
+            if (!m.containsResource(r)) return false;
+            m.removeAll(r, null, null);
+            m.removeAll(null, null, r);
+            return true;
+        }
+    }
+
+    // =====================================================================
+    // Jobs – write
+    // =====================================================================
+
+    private void applyJobProps(Model m, Resource r, JobOfferRequest req) {
+        m.removeAll(r, p(DCT_NS, "title"), null);
+        m.removeAll(r, p(EMP_NS, "postedBy"), null);
+        m.removeAll(r, p(EMP_NS, "hasSector"), null);
+        m.removeAll(r, p(EMP_NS, "hasLocation"), null);
+        m.removeAll(r, p(EMP_NS, "remote"), null);
+        m.removeAll(r, p(EMP_NS, "requiredExperience"), null);
+        m.removeAll(r, p(EMP_NS, "seniority"), null);
+        m.removeAll(r, p(EMP_NS, "salary"), null);
+        m.removeAll(r, p(EMP_NS, "postedDate"), null);
+        m.removeAll(r, p(EMP_NS, "disabilityFriendly"), null);
+        m.removeAll(r, p(EMP_NS, "ageRangeMin"), null);
+        m.removeAll(r, p(EMP_NS, "ageRangeMax"), null);
+        m.removeAll(r, p(EMP_NS, "genderPreference"), null);
+        m.removeAll(r, p(EMP_NS, "nationalityReq"), null);
+        m.removeAll(r, p(DCT_NS, "source"), null);
+        m.removeAll(r, p(EMP_NS, "hasSkill"), null);
+
+        if (req.title() != null)                r.addProperty(p(DCT_NS, "title"), req.title());
+        if (req.remote() != null)               r.addLiteral(p(EMP_NS, "remote"), m.createTypedLiteral(req.remote()));
+        if (req.requiredExperience() != null)   r.addLiteral(p(EMP_NS, "requiredExperience"), m.createTypedLiteral(req.requiredExperience()));
+        if (req.seniority() != null)            r.addProperty(p(EMP_NS, "seniority"), req.seniority());
+        if (req.salary() != null)               r.addLiteral(p(EMP_NS, "salary"), m.createTypedLiteral(req.salary()));
+        if (req.postedDate() != null)           r.addProperty(p(EMP_NS, "postedDate"), req.postedDate());
+        if (req.disabilityFriendly() != null)   r.addLiteral(p(EMP_NS, "disabilityFriendly"), m.createTypedLiteral(req.disabilityFriendly()));
+        if (req.ageRangeMin() != null)          r.addLiteral(p(EMP_NS, "ageRangeMin"), m.createTypedLiteral(req.ageRangeMin()));
+        if (req.ageRangeMax() != null)          r.addLiteral(p(EMP_NS, "ageRangeMax"), m.createTypedLiteral(req.ageRangeMax()));
+        if (req.genderPreference() != null)     r.addProperty(p(EMP_NS, "genderPreference"), req.genderPreference());
+        if (req.nationalityRequirement() != null) r.addProperty(p(EMP_NS, "nationalityReq"), req.nationalityRequirement());
+        if (req.source() != null)               r.addProperty(p(DCT_NS, "source"), req.source());
+
+        // company
+        if (req.companyId() != null && !req.companyId().isBlank()) {
+            Resource comp = findCompanyById(req.companyId());
+            if (comp != null) r.addProperty(p(EMP_NS, "postedBy"), comp);
+        }
+
+        // sector: find or create
+        if (req.sector() != null && !req.sector().isBlank()) {
+            Resource sec = findByLabel("Sector", req.sector());
+            if (sec == null) {
+                String secId = generateId("sector", "Sector");
+                sec = m.createResource(EMP_NS + secId);
+                sec.addProperty(RDF.type, m.createResource(EMP_NS + "Sector"));
+                sec.addProperty(RDFS.label, req.sector());
+            }
+            r.addProperty(p(EMP_NS, "hasSector"), sec);
+        }
+
+        // location: find or create
+        if (req.location() != null && !req.location().isBlank()) {
+            Resource loc = findByLabel("Location", req.location());
+            if (loc == null) {
+                String locId = generateId("loc", "Location");
+                loc = m.createResource(EMP_NS + locId);
+                loc.addProperty(RDF.type, m.createResource(EMP_NS + "Location"));
+                loc.addProperty(RDFS.label, req.location());
+            }
+            r.addProperty(p(EMP_NS, "hasLocation"), loc);
+        }
+
+        // skills
+        if (req.skills() != null) {
+            for (String skillLabel : req.skills()) {
+                if (skillLabel == null || skillLabel.isBlank()) continue;
+                Resource skill = findByLabel("Skill", skillLabel);
+                if (skill == null) {
+                    String sId = generateId("skill", "Skill");
+                    skill = m.createResource(EMP_NS + sId);
+                    skill.addProperty(RDF.type, m.createResource(EMP_NS + "Skill"));
+                    skill.addProperty(RDFS.label, skillLabel);
+                }
+                r.addProperty(p(EMP_NS, "hasSkill"), skill);
+            }
+        }
+    }
+
+    public JobOfferDTO createJob(JobOfferRequest req) {
+        synchronized (dataset) {
+            String id = generateId("job", "JobOffer");
+            Model m = model();
+            Resource r = m.createResource(EMP_NS + id);
+            r.addProperty(RDF.type, m.createResource(EMP_NS + "JobOffer"));
+            applyJobProps(m, r, req);
+            return getJob(id).orElseThrow();
+        }
+    }
+
+    public Optional<JobOfferDTO> updateJob(String id, JobOfferRequest req) {
+        synchronized (dataset) {
+            Model m = model();
+            Resource r = m.getResource(EMP_NS + id);
+            if (!m.containsResource(r)) return Optional.empty();
+            applyJobProps(m, r, req);
+            return getJob(id);
+        }
+    }
+
+    public boolean deleteJob(String id) {
+        synchronized (dataset) {
+            Model m = model();
+            Resource r = m.getResource(EMP_NS + id);
+            if (!m.containsResource(r)) return false;
+            m.removeAll(r, null, null);
+            m.removeAll(null, null, r);
+            return true;
+        }
     }
 }

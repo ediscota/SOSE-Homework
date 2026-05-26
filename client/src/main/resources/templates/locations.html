@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Locations')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main>
+    <div class="page-header">
+        <h2>Locations</h2>
+        <a class="btn" th:href="@{/locations/new}">+ New Location</a>
+    </div>
+    <div class="card">
+        <table>
+            <thead>
+            <tr><th>ID</th><th>Label</th><th></th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="loc : ${locations}">
+                <td><code th:text="${loc.id}">loc-001</code></td>
+                <td th:text="${loc.label}">Label</td>
+                <td class="table-actions">
+                    <a class="btn btn-sm btn-secondary" th:href="@{/locations/__${loc.id}__/edit}">Edit</a>
+                    <form th:action="@{/locations/__${loc.id}__/delete}" method="post" style="display:inline">
+                        <button class="btn btn-sm btn-danger" type="submit"
+                                onclick="return confirm('Delete this location?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

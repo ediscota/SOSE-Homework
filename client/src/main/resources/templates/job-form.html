@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${isEdit} ? 'Edit Job' : 'New Job')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main>
+    <h2 th:text="${isEdit} ? 'Edit Job Offer' : 'New Job Offer'">Job Form</h2>
+    <div class="card">
+        <form th:action="${isEdit} ? '/jobs/' + ${job.id} + '/edit' : '/jobs/new'"
+              method="post">
+
+            <div class="form-group">
+                <label for="title">Title *</label>
+                <input type="text" id="title" name="title" required
+                       th:value="${job != null ? job.title : ''}"/>
+            </div>
+
+            <div class="form-group">
+                <label for="companyId">Company</label>
+                <select id="companyId" name="companyId">
+                    <option value="">— select —</option>
+                    <option th:each="co : ${companies}"
+                            th:value="${co.id}"
+                            th:text="${co.name}"
+                            th:selected="${job != null and job.company == co.name}">
+                        Company
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="sector">Sector</label>
+                <select id="sector" name="sector">
+                    <option value="">— select —</option>
+                    <option th:each="sec : ${sectors}"
+                            th:value="${sec.label}"
+                            th:text="${sec.label}"
+                            th:selected="${job != null and job.sector == sec.label}">
+                        Sector
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="location">Location</label>
+                <select id="location" name="location">
+                    <option value="">— select —</option>
+                    <option th:each="loc : ${locations}"
+                            th:value="${loc.label}"
+                            th:text="${loc.label}"
+                            th:selected="${job != null and job.location == loc.label}">
+                        Location
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Remote</label>
+                <div class="form-check">
+                    <input type="checkbox" id="remote" name="remote" value="true"
+                           th:checked="${job != null and job.remote}"/>
+                    <label for="remote">Remote position</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="requiredExperience">Required Experience (years)</label>
+                <input type="number" id="requiredExperience" name="requiredExperience" min="0"
+                       th:value="${job != null ? job.requiredExperience : ''}"/>
+            </div>
+
+            <div class="form-group">
+                <label for="seniority">Seniority</label>
+                <input type="text" id="seniority" name="seniority"
+                       th:value="${job != null ? job.seniority : ''}"/>
+            </div>
+
+            <div class="form-group">
+                <label for="salary">Salary</label>
+                <input type="number" id="salary" name="salary" min="0"
+                       th:value="${job != null ? job.salary : ''}"/>
+            </div>
+
+            <div class="form-group">
+                <label for="postedDate">Posted Date</label>
+                <input type="date" id="postedDate" name="postedDate"
+                       th:value="${job != null ? job.postedDate : ''}"/>
+            </div>
+
+            <div class="form-group">
+                <label>Disability Friendly</label>
+                <div class="form-check">
+                    <input type="checkbox" id="disabilityFriendly" name="disabilityFriendly" value="true"
+                           th:checked="${job != null and job.disabilityFriendly}"/>
+                    <label for="disabilityFriendly">Yes</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Skills</label>
+                <div class="skills-grid">
+                    <div class="form-check" th:each="sk : ${skills}">
+                        <input type="checkbox" name="skills"
+                               th:id="'skill-' + ${sk.id}"
+                               th:value="${sk.label}"
+                               th:checked="${job != null and job.skills != null and #lists.contains(job.skills, sk.label)}"/>
+                        <label th:for="'skill-' + ${sk.id}" th:text="${sk.label}">Skill</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="form-group">
+                    <label for="ageRangeMin">Age Range Min</label>
+                    <input type="number" id="ageRangeMin" name="ageRangeMin" min="16"
+                           th:value="${job != null ? job.ageRangeMin : ''}"/>
+                </div>
+                <div class="form-group">
+                    <label for="ageRangeMax">Age Range Max</label>
+                    <input type="number" id="ageRangeMax" name="ageRangeMax" max="99"
+                           th:value="${job != null ? job.ageRangeMax : ''}"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="genderPreference">Gender Preference</label>
+                <input type="text" id="genderPreference" name="genderPreference"
+                       th:value="${job != null ? job.genderPreference : ''}"/>
+            </div>
+
+            <div class="form-group">
+                <label for="nationalityRequirement">Nationality Requirement</label>
+                <input type="text" id="nationalityRequirement" name="nationalityRequirement"
+                       th:value="${job != null ? job.nationalityRequirement : ''}"/>
+            </div>
+
+            <div class="form-group">
+                <label for="source">Source</label>
+                <input type="text" id="source" name="source"
+                       th:value="${job != null ? job.source : ''}"/>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn" type="submit" th:text="${isEdit} ? 'Save Changes' : 'Create Job'">Submit</button>
+                <a class="btn btn-secondary" th:href="@{/jobs}">Cancel</a>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${isEdit} ? 'Edit Skill' : 'New Skill')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main>
+    <h2 th:text="${isEdit} ? 'Edit Skill' : 'New Skill'">Skill Form</h2>
+    <div class="card">
+        <form th:action="${isEdit} ? '/skills/' + ${skill.id} + '/edit' : '/skills/new'"
+              method="post">
+
+            <div class="form-group">
+                <label for="label">Label *</label>
+                <input type="text" id="label" name="label" required
+                       th:value="${skill != null ? skill.label : ''}"/>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn" type="submit" th:text="${isEdit} ? 'Save Changes' : 'Create Skill'">Submit</button>
+                <a class="btn btn-secondary" th:href="@{/skills}">Cancel</a>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>

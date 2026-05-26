@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${isEdit} ? 'Edit Location' : 'New Location')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main>
+    <h2 th:text="${isEdit} ? 'Edit Location' : 'New Location'">Location Form</h2>
+    <div class="card">
+        <form th:action="${isEdit} ? '/locations/' + ${location.id} + '/edit' : '/locations/new'"
+              method="post">
+
+            <div class="form-group">
+                <label for="label">Label *</label>
+                <input type="text" id="label" name="label" required
+                       th:value="${location != null ? location.label : ''}"/>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn" type="submit" th:text="${isEdit} ? 'Save Changes' : 'Create Location'">Submit</button>
+                <a class="btn btn-secondary" th:href="@{/locations}">Cancel</a>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>

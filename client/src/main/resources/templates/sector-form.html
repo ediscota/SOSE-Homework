@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${isEdit} ? 'Edit Sector' : 'New Sector')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main>
+    <h2 th:text="${isEdit} ? 'Edit Sector' : 'New Sector'">Sector Form</h2>
+    <div class="card">
+        <form th:action="${isEdit} ? '/sectors/' + ${sector.id} + '/edit' : '/sectors/new'"
+              method="post">
+
+            <div class="form-group">
+                <label for="label">Label *</label>
+                <input type="text" id="label" name="label" required
+                       th:value="${sector != null ? sector.label : ''}"/>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn" type="submit" th:text="${isEdit} ? 'Save Changes' : 'Create Sector'">Submit</button>
+                <a class="btn btn-secondary" th:href="@{/sectors}">Cancel</a>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>

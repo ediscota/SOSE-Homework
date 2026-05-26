@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Skills')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main>
+    <div class="page-header">
+        <h2>Skills</h2>
+        <a class="btn" th:href="@{/skills/new}">+ New Skill</a>
+    </div>
+    <div class="card">
+        <table>
+            <thead>
+            <tr><th>ID</th><th>Label</th><th></th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="sk : ${skills}">
+                <td><code th:text="${sk.id}">skill-001</code></td>
+                <td th:text="${sk.label}">Label</td>
+                <td class="table-actions">
+                    <a class="btn btn-sm btn-secondary" th:href="@{/skills/__${sk.id}__/edit}">Edit</a>
+                    <form th:action="@{/skills/__${sk.id}__/delete}" method="post" style="display:inline">
+                        <button class="btn btn-sm btn-danger" type="submit"
+                                onclick="return confirm('Delete this skill?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

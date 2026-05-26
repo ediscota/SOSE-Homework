@@ -35,3 +35,21 @@ code { background: #eef0f4; padding: 0.1rem 0.35rem; border-radius: 3px; font-si
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 @media (max-width: 700px) { .grid-2 { grid-template-columns: 1fr; } }
 pre { background: #1d2330; color: #d8dde8; padding: 0.8rem 1rem; border-radius: 6px; overflow-x: auto; font-size: 0.8rem; }
+.btn-danger { background: #b32424; color: white; }
+.btn-danger:hover { background: #8f1c1c; }
+.btn-sm { padding: 0.25rem 0.6rem; font-size: 0.8rem; }
+.form-group { margin-bottom: 1rem; }
+.form-group label { display: block; font-weight: 500; margin-bottom: 0.35rem; font-size: 0.9rem; }
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%; padding: 0.5rem 0.7rem; border: 1px solid #d0d5df;
+    border-radius: 6px; font-size: 0.9rem; background: white;
+}
+.form-group input:focus, .form-group select:focus {
+    outline: none; border-color: #2c5cdc; box-shadow: 0 0 0 2px rgba(44,92,220,0.15);
+}
+.form-actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
+.form-check { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; }
+.form-check input[type="checkbox"] { width: auto; }
+.skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.4rem; margin-top: 0.4rem; }
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.table-actions { display: flex; gap: 0.4rem; }

@@ -4,8 +4,13 @@
 <body>
 <header th:replace="~{fragments/layout :: header}"></header>
 <main>
-    <h2>Candidates</h2>
-    <p class="muted">Select a candidate to see job recommendations from the DaaS, then ask the EaaS to evaluate one of them.</p>
+    <div class="page-header">
+        <div>
+            <h2>Candidates</h2>
+            <p class="muted">Select a candidate to see job recommendations from the DaaS, then ask the EaaS to evaluate one of them.</p>
+        </div>
+        <a class="btn" th:href="@{/candidates/new}">+ New Candidate</a>
+    </div>
     <div class="card">
         <table>
             <thead>
@@ -23,7 +28,14 @@
                 <td>
                     <span th:each="s : ${c.skills}" class="badge badge-skill" th:text="${s}">skill</span>
                 </td>
-                <td><a class="btn" th:href="@{/match(candidateId=${c.id})}">Recommend</a></td>
+                <td class="table-actions">
+                    <a class="btn btn-sm" th:href="@{/match(candidateId=${c.id})}">Recommend</a>
+                    <a class="btn btn-sm btn-secondary" th:href="@{/candidates/__${c.id}__/edit}">Edit</a>
+                    <form th:action="@{/candidates/__${c.id}__/delete}" method="post" style="display:inline">
+                        <button class="btn btn-sm btn-danger" type="submit"
+                                onclick="return confirm('Delete this candidate?')">Delete</button>
+                    </form>
+                </td>
             </tr>
             </tbody>
         </table>
