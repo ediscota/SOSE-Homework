@@ -34,9 +34,11 @@ public class EmploymentService {
     private static final String SCHEMA_NS = "http://schema.org/";
 
     private final Dataset dataset;
+    private final DatasetPersistenceService persistenceService;
 
-    public EmploymentService(Dataset employmentDataset) {
+    public EmploymentService(Dataset employmentDataset, DatasetPersistenceService persistenceService) {
         this.dataset = employmentDataset;
+        this.persistenceService = persistenceService;
     }
 
     // ---------------- Candidates ----------------
@@ -326,6 +328,10 @@ public class EmploymentService {
         return model().createProperty(ns, local);
     }
 
+    private void persist() {
+        persistenceService.save(dataset);
+    }
+
     /**
      * Generates a new URI id by scanning all existing resources of the given
      * emp: type and finding the next free sequential number.
@@ -435,6 +441,7 @@ public class EmploymentService {
             r.addProperty(p(SCHEMA_NS, "name"), req.name());
             if (req.website() != null && !req.website().isBlank())
                 r.addProperty(p(SCHEMA_NS, "url"), req.website());
+            persist();
             return new CompanyDTO(id, req.name(), req.website());
         }
     }
@@ -449,6 +456,7 @@ public class EmploymentService {
             r.addProperty(p(SCHEMA_NS, "name"), req.name());
             if (req.website() != null && !req.website().isBlank())
                 r.addProperty(p(SCHEMA_NS, "url"), req.website());
+            persist();
             return Optional.of(new CompanyDTO(id, req.name(), req.website()));
         }
     }
@@ -460,6 +468,7 @@ public class EmploymentService {
             if (!m.containsResource(r)) return false;
             m.removeAll(r, null, null);
             m.removeAll(null, null, r);
+            persist();
             return true;
         }
     }
@@ -510,6 +519,7 @@ public class EmploymentService {
             Resource r = m.createResource(EMP_NS + id);
             r.addProperty(RDF.type, m.createResource(EMP_NS + "Skill"));
             r.addProperty(RDFS.label, req.label());
+            persist();
             return new SkillDTO(id, req.label());
         }
     }
@@ -521,6 +531,7 @@ public class EmploymentService {
             if (!m.containsResource(r)) return Optional.empty();
             m.removeAll(r, RDFS.label, null);
             r.addProperty(RDFS.label, req.label());
+            persist();
             return Optional.of(new SkillDTO(id, req.label()));
         }
     }
@@ -532,6 +543,7 @@ public class EmploymentService {
             if (!m.containsResource(r)) return false;
             m.removeAll(r, null, null);
             m.removeAll(null, null, r);
+            persist();
             return true;
         }
     }
@@ -582,6 +594,7 @@ public class EmploymentService {
             Resource r = m.createResource(EMP_NS + id);
             r.addProperty(RDF.type, m.createResource(EMP_NS + "Sector"));
             r.addProperty(RDFS.label, req.label());
+            persist();
             return new SectorDTO(id, req.label());
         }
     }
@@ -593,6 +606,7 @@ public class EmploymentService {
             if (!m.containsResource(r)) return Optional.empty();
             m.removeAll(r, RDFS.label, null);
             r.addProperty(RDFS.label, req.label());
+            persist();
             return Optional.of(new SectorDTO(id, req.label()));
         }
     }
@@ -604,6 +618,7 @@ public class EmploymentService {
             if (!m.containsResource(r)) return false;
             m.removeAll(r, null, null);
             m.removeAll(null, null, r);
+            persist();
             return true;
         }
     }
@@ -654,6 +669,7 @@ public class EmploymentService {
             Resource r = m.createResource(EMP_NS + id);
             r.addProperty(RDF.type, m.createResource(EMP_NS + "Location"));
             r.addProperty(RDFS.label, req.label());
+            persist();
             return new LocationDTO(id, req.label());
         }
     }
@@ -665,6 +681,7 @@ public class EmploymentService {
             if (!m.containsResource(r)) return Optional.empty();
             m.removeAll(r, RDFS.label, null);
             r.addProperty(RDFS.label, req.label());
+            persist();
             return Optional.of(new LocationDTO(id, req.label()));
         }
     }
@@ -676,6 +693,7 @@ public class EmploymentService {
             if (!m.containsResource(r)) return false;
             m.removeAll(r, null, null);
             m.removeAll(null, null, r);
+            persist();
             return true;
         }
     }
@@ -741,6 +759,7 @@ public class EmploymentService {
             Resource r = m.createResource(EMP_NS + id);
             r.addProperty(RDF.type, m.createResource(EMP_NS + "Candidate"));
             applyCandidateProps(m, r, req);
+            persist();
             return getCandidate(id).orElseThrow();
         }
     }
@@ -751,6 +770,7 @@ public class EmploymentService {
             Resource r = m.getResource(EMP_NS + id);
             if (!m.containsResource(r)) return Optional.empty();
             applyCandidateProps(m, r, req);
+            persist();
             return getCandidate(id);
         }
     }
@@ -762,6 +782,7 @@ public class EmploymentService {
             if (!m.containsResource(r)) return false;
             m.removeAll(r, null, null);
             m.removeAll(null, null, r);
+            persist();
             return true;
         }
     }
@@ -854,6 +875,7 @@ public class EmploymentService {
             Resource r = m.createResource(EMP_NS + id);
             r.addProperty(RDF.type, m.createResource(EMP_NS + "JobOffer"));
             applyJobProps(m, r, req);
+            persist();
             return getJob(id).orElseThrow();
         }
     }
@@ -864,6 +886,7 @@ public class EmploymentService {
             Resource r = m.getResource(EMP_NS + id);
             if (!m.containsResource(r)) return Optional.empty();
             applyJobProps(m, r, req);
+            persist();
             return getJob(id);
         }
     }
@@ -875,6 +898,7 @@ public class EmploymentService {
             if (!m.containsResource(r)) return false;
             m.removeAll(r, null, null);
             m.removeAll(null, null, r);
+            persist();
             return true;
         }
     }

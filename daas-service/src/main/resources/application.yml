@@ -7,7 +7,8 @@ spring:
 
 daas:
   dataset:
-    path: classpath:dataset/employment.rdf
+    file: data/employment.rdf
+    seed: classpath:dataset/employment.rdf
 
 logging:
   level:

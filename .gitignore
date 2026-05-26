@@ -10,3 +10,4 @@ target/
 *.log
 HELP.md
 audit-data/
+data/
