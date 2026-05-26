@@ -58,7 +58,7 @@
                 <label>Remote</label>
                 <div class="form-check">
                     <input type="checkbox" id="remote" name="remote" value="true"
-                           th:checked="${job != null and job.remote}"/>
+                           th:checked="${job != null and job.remote == true}"/>
                     <label for="remote">Remote position</label>
                 </div>
             </div>
@@ -91,7 +91,7 @@
                 <label>Disability Friendly</label>
                 <div class="form-check">
                     <input type="checkbox" id="disabilityFriendly" name="disabilityFriendly" value="true"
-                           th:checked="${job != null and job.disabilityFriendly}"/>
+                           th:checked="${job != null and job.disabilityFriendly == true}"/>
                     <label for="disabilityFriendly">Yes</label>
                 </div>
             </div>

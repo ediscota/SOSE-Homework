@@ -41,7 +41,7 @@
                 <label>Has Disability</label>
                 <div class="form-check">
                     <input type="checkbox" id="hasDisability" name="hasDisability" value="true"
-                           th:checked="${candidate != null and candidate.hasDisability}"/>
+                           th:checked="${candidate != null and candidate.hasDisability == true}"/>
                     <label for="hasDisability">Yes</label>
                 </div>
             </div>

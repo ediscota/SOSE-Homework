@@ -4,11 +4,89 @@
 <body>
 <header th:replace="~{fragments/layout :: header}"></header>
 <main>
-    <a th:href="@{/audit}" class="btn btn-secondary">← Back</a>
-    <h2>Audit record <code th:text="${record.auditId}">audit-…</code></h2>
-    <div class="card">
-        <pre th:text="${record}">record</pre>
+    <div class="page-header">
+        <h2 style="margin: 0;">Audit record <code th:text="${record.auditId}">audit-…</code></h2>
+        <a th:href="@{/audit}" class="btn btn-secondary">← Back to audit log</a>
     </div>
+
+    <div class="card">
+        <div style="display:flex; align-items:center; gap:2rem;">
+            <div>
+                <span class="muted">Decision:</span>
+                <span th:class="'decision-' + ${record.decision}" th:text="${record.decision}">PROCEED</span>
+            </div>
+            <div>
+                <span class="muted">Risk Level:</span>
+                <span th:class="'risk-' + ${record.riskLevel}" th:text="${record.riskLevel}">LOW</span>
+            </div>
+            <div>
+                <span class="muted">Timestamp:</span>
+                <strong th:text="${record.timestamp}">ts</strong>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <div class="card">
+        <h3 style="margin-top:0">Triggered policies</h3>
+        <p th:if="${#lists.isEmpty(record.findings)}" class="muted">No policy was triggered.</p>
+        <div th:each="f : ${record.findings}" th:class="'finding ' + ${f.severity}">
+            <strong th:text="${f.policyName}">Policy</strong>
+            (<code th:text="${f.policyId}">P-X</code>, severity <span th:text="${f.severity}">HIGH</span>)
+            <p style="margin:0.3rem 0" th:text="${f.message}">Message</p>
+            <ul>
+                <li th:each="e : ${f.evidence}" th:text="${e}">evidence</li>
+            </ul>
+            <p class="muted" style="margin:0.5rem 0 0">Required actions:</p>
+            <ul>
+                <li th:each="a : ${f.requiredActions}" th:text="${a}">action</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 style="margin-top:0">Applied policies</h3>
+        <p>
+            <span th:each="p : ${record.appliedPolicies}" class="badge badge-skill" th:text="${p}">P-X</span>
+        </p>
+    </div>
+
+    <div class="grid-2">
+        <details class="card">
+            <summary style="font-weight: 500; cursor: pointer; font-size: 1.17em; margin-bottom: 0.5rem;">Evaluated Candidate</summary>
+            <pre id="candidate-json" style="margin-bottom:0">{}</pre>
+        </details>
+        <details class="card">
+            <summary style="font-weight: 500; cursor: pointer; font-size: 1.17em; margin-bottom: 0.5rem;">Evaluated Job</summary>
+            <pre id="job-json" style="margin-bottom:0">{}</pre>
+        </details>
+    </div>
+
+    <details class="card">
+        <summary style="font-weight: 500; cursor: pointer; font-size: 1.17em; margin-bottom: 0.5rem;">Raw Evaluation Request</summary>
+        <pre id="request-json" style="margin-bottom: 0;">{}</pre>
+    </details>
+
+    <details class="card">
+        <summary style="font-weight: 500; cursor: pointer; font-size: 1.17em; margin-bottom: 0.5rem;">Raw Audit Record</summary>
+        <pre id="record-json" style="margin-bottom: 0;">{}</pre>
+    </details>
 </main>
+
+<script th:inline="javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        const candidate = /*[[${record.evaluatedCandidate}]]*/ {};
+        const job = /*[[${record.evaluatedJob}]]*/ {};
+        const request = /*[[${record.request}]]*/ {};
+        const fullRecord = /*[[${record}]]*/ {};
+
+        document.getElementById('candidate-json').textContent = JSON.stringify(candidate, null, 2);
+        document.getElementById('job-json').textContent = JSON.stringify(job, null, 2);
+        document.getElementById('request-json').textContent = JSON.stringify(request, null, 2);
+        document.getElementById('record-json').textContent = JSON.stringify(fullRecord, null, 2);
+    });
+</script>
+
 </body>
 </html>
