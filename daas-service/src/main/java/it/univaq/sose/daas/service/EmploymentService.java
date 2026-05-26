@@ -43,7 +43,7 @@ public class EmploymentService {
 
     public List<CandidateDTO> listCandidates() {
         return runCandidateQuery(null);
-    }
+    } 
 
     public Optional<CandidateDTO> getCandidate(String id) {
         List<CandidateDTO> r = runCandidateQuery("emp:" + id);
