@@ -1,7 +1,7 @@
 # SoSE Midterm Homework — Data-as-a-Service + Ethics-as-a-Service
 
 **Domain:** employment / job matching
-**Stack:** Java 21 · Spring Boot 3.3 · Apache Jena 5.1 (TDB/RDF/SPARQL) · Thymeleaf
+**Stack:** Java 21 · Spring Boot 3.3 · Apache Jena 5.1 (RDF/XML + SPARQL) · Thymeleaf · springdoc-openapi (Swagger UI)
 **Team:** 3 students
 **Course:** Service-Oriented Software Engineering — A.Y. 2025/2026 · Università dell'Aquila
 
@@ -56,9 +56,19 @@ mvn -pl client       spring-boot:run
 http://localhost:8080
 ```
 
+**Interactive API docs (Swagger UI):**
+
+| Service | URL                                              |
+|---------|--------------------------------------------------|
+| DaaS    | http://localhost:8081/swagger-ui.html            |
+| EaaS    | http://localhost:8082/swagger-ui.html            |
+
+Each Swagger page lets you explore every endpoint and try it out from the browser.
 ## 4. RDF dataset
 
-File: [`daas-service/src/main/resources/dataset/employment.ttl`](daas-service/src/main/resources/dataset/employment.ttl)
+File: [`daas-service/src/main/resources/dataset/employment.rdf`](daas-service/src/main/resources/dataset/employment.rdf) — serialised as **RDF/XML**, ~635 triples, loaded in-memory by Apache Jena at startup.
+
+Writes from the REST API (POST / PUT / DELETE) are persisted back to the same file via `DatasetPersistenceService`, so changes survive a restart.
 
 | Class            | Examples                                  |
 |------------------|-------------------------------------------|
@@ -75,20 +85,51 @@ Custom namespace: `http://sose.univaq.it/employment#` (prefix `emp:`). Re-uses `
 
 ## 5. DaaS — REST endpoints
 
-All responses are JSON. Base URL `http://localhost:8081`.
+All responses are JSON. Base URL `http://localhost:8081`. Interactive docs at `/swagger-ui.html`.
 
-| Method | URI                                  | Purpose                                                     |
-|--------|--------------------------------------|-------------------------------------------------------------|
-| GET    | `/api/candidates`                    | List all candidates                                         |
-| GET    | `/api/candidates/{id}`               | Single candidate                                            |
+The DaaS exposes **7 controllers** with **full CRUD** for every domain resource, plus a SPARQL-powered matching endpoint.
+
+### 5.1 Candidates — `/api/candidates`
+
+| Method | URI                          | Purpose                                  |
+|--------|------------------------------|------------------------------------------|
+| GET    | `/api/candidates`            | List all candidates                      |
+| GET    | `/api/candidates/{id}`       | Single candidate by ID                   |
+| POST   | `/api/candidates`            | Create a new candidate                   |
+| PUT    | `/api/candidates/{id}`       | Update an existing candidate             |
+| DELETE | `/api/candidates/{id}`       | Delete a candidate                       |
+
+### 5.2 Job offers — `/api/jobs`
+
+| Method | URI                                  | Purpose                                                                   |
+|--------|--------------------------------------|---------------------------------------------------------------------------|
 | GET    | `/api/jobs`                          | Search offers (filters: `sector`, `location`, `minSalary`, `remote`) — **multi-condition SPARQL** |
-| GET    | `/api/jobs/{id}`                     | Single offer                                                |
-| GET    | `/api/jobs/sector/{sector}`          | Offers in a sector                                          |
-| GET    | `/api/jobs/location/{location}`      | Offers in a location                                        |
-| GET    | `/api/jobs/risky`                    | Offers flagged as risky by the dataset (proxies/unknown source) |
-| GET    | `/api/match/candidate/{id}`          | **Recommendation**: skill overlap + location + experience   |
+| GET    | `/api/jobs/{id}`                     | Single offer                                                              |
+| GET    | `/api/jobs/sector/{sector}`          | Offers in a sector                                                        |
+| GET    | `/api/jobs/location/{location}`      | Offers in a location                                                      |
+| GET    | `/api/jobs/risky`                    | Offers flagged as risky (discriminatory proxies / unverified source)      |
+| POST   | `/api/jobs`                          | Create a new offer                                                        |
+| PUT    | `/api/jobs/{id}`                     | Update an existing offer                                                  |
+| DELETE | `/api/jobs/{id}`                     | Delete an offer                                                           |
 
-See [`docs/endpoints.md`](docs/endpoints.md) for example calls.
+### 5.3 Matching — `/api/match` (read-only)
+
+| Method | URI                                  | Purpose                                                       |
+|--------|--------------------------------------|---------------------------------------------------------------|
+| GET    | `/api/match/candidate/{id}`          | **Recommendation**: skill overlap + location + experience     |
+
+### 5.4 Lookup resources — full CRUD
+
+Same `GET / GET {id} / POST / PUT {id} / DELETE {id}` pattern on:
+
+| Base path          | Resource                |
+|--------------------|-------------------------|
+| `/api/companies`   | Hiring companies        |
+| `/api/skills`      | Skill catalogue         |
+| `/api/sectors`     | Work sectors            |
+| `/api/locations`   | Geographic locations    |
+
+See [`docs/endpoints.md`](docs/endpoints.md) for example payloads, or open Swagger UI at http://localhost:8081/swagger-ui.html to try every endpoint from the browser.
 
 ## 6. EaaS — workflow
 
@@ -99,7 +140,7 @@ See [`docs/endpoints.md`](docs/endpoints.md) for example calls.
 5. An `AuditRecord` is persisted to memory **and** to JSONL on disk.
 6. The full `EvaluationResponse` with rationale + applied policies + required actions + provenance is returned.
 
-Endpoints (base URL `http://localhost:8082`):
+Endpoints (base URL `http://localhost:8082`, Swagger UI at `/swagger-ui.html`):
 
 | Method | URI                       | Purpose                                  |
 |--------|---------------------------|------------------------------------------|
@@ -142,24 +183,4 @@ curl -X POST http://localhost:8082/api/ethics/evaluate \
      -d @docs/example-requests/req-reject.json
 ```
 
-## 9. Demo script (≈ 30 minutes for 3 people)
-
-1. **Member 1** — domain & RDF: walk through the ontology, show 2-3 SPARQL queries in `EmploymentService`, hit `/api/match/candidate/cand-005` from the browser.
-2. **Member 2** — EaaS: open `/policies`, change a policy file live to show externality, run the two example requests, open the audit trail.
-3. **Member 3** — end-to-end: pick a candidate in the UI, recommend, evaluate two jobs (one PROCEED, one REJECT), open the audit detail.
-4. Close with the critical reflection: limits of the system, what should never be automated.
-
-## 10. Team split
-
-| Member | Owns                                                  |
-|--------|-------------------------------------------------------|
-| 1      | DaaS: ontology, SPARQL queries, REST endpoints, dataset documentation |
-| 2      | EaaS: policy engine, JSON policies, audit, decision logic |
-| 3      | Client + integration + slides + demo script           |
-
-## 11. Critical reflection (to put in slides)
-
-- The system **suggests** matches — it does not decide hiring. A human always remains in the loop after `REVISE` / `ESCALATE`.
-- Policies are written in JSON and can be edited by non-developers, but the underlying **rules** are still Java code: governance over the policy *catalog* still needs human review.
-- The dataset is synthetic. A real deployment would need GDPR-grade consent management and right-to-explanation flows beyond what the audit trail offers today.
-- Disability/age/gender are explicitly checked: but discriminatory proxies can be subtler (postcode, university, name). A v2 would add fairness metrics across candidate groups, not only field-presence rules.
+.
